@@ -4,6 +4,35 @@ import com.openclassrooms.mddapi.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
+    /**
+     * Trouve les articles associés à un thème spécifique
+     * @param themeId l'ID du thème
+     * @return une liste d'articles
+     */
+    List<Article> findByThemeId(Long themeId);
+
+    /**
+     * Trouve les articles créés par un utilisateur spécifique
+     * @param utilisateurId l'ID de l'utilisateur
+     * @return une liste d'articles
+     */
+    List<Article> findByNomUtilisateurId(Long utilisateurId);
+
+    /**
+     * Trouve les articles associés à un thème spécifique et les trie par date de création décroissante
+     * @param themeId l'ID du thème
+     * @return une liste d'articles triés par date de création décroissante
+     */
+    List<Article> findByThemeIdOrderByCreeADesc(Long themeId);
+
+    /**
+     * Trouve les articles associés à une liste de thèmes et les trie par date de création décroissante
+     * @param themeIds la liste des IDs de thèmes
+     * @return une liste d'articles triés par date de création décroissante
+     */
+    List<Article> findByThemeIdInOrderByCreeADesc(List<Long> themeIds);
 }
