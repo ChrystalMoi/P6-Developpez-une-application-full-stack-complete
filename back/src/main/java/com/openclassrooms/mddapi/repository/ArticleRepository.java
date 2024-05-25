@@ -23,16 +23,16 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByNomUtilisateurId(Long utilisateurId);
 
     /**
-     * Trouve les articles associés à un thème spécifique et les trie par date de création décroissante
+     * Trouve les articles associés à un thème spécifique et les trie par date de création dé-croissante
      * @param themeId l'ID du thème
-     * @return une liste d'articles triés par date de création décroissante
+     * @return une liste d'articles triés par date de création dé-croissante
      */
     List<Article> findByThemeIdOrderByCreeADesc(Long themeId);
 
     /**
-     * Trouve les articles associés à une liste de thèmes et les trie par date de création décroissante
+     * Trouve les articles associés à une liste de thèmes et les trie par date de création dé-croissante
      * @param themeIds la liste des IDs de thèmes
-     * @return une liste d'articles triés par date de création décroissante
+     * @return une liste d'articles triés par date de création dé-croissante
      */
     List<Article> findByThemeIdInOrderByCreeADesc(List<Long> themeIds);
 }
