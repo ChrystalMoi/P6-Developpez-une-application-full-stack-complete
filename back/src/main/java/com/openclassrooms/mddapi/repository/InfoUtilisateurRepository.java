@@ -8,5 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface InfoUtilisateurRepository extends JpaRepository<InfoUtilisateur,Long> {
+    /**
+     * Trouve les commentaires associés à un article spécifique.
+     * @param email l'ID de l'article
+     * @return une liste de commentaires
+     */
     Optional<InfoUtilisateur> findByEmail(String email);
 }
