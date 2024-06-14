@@ -21,7 +21,7 @@ public class JwtService {
     private final JwtEncoder jwtEncoder;
 
     /**
-     * Constructeur du service JWT
+     * Constructeur 
      *
      * @param jwtEncoder l'encodeur JWT utilisé pour encoder les tokens
      */
