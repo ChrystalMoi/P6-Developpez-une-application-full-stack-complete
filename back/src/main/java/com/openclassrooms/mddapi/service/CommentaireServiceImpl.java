@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.entity.Commentaire;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.repository.CommentaireRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
  * Implémentation du service pour gérer les opérations relatives aux commentaires
  */
 @Service
+@RequiredArgsConstructor
 public class CommentaireServiceImpl implements CommentaireService {
-    @Autowired
-    private CommentaireRepository commentaireRepository;
+    private final CommentaireRepository commentaireRepository;
 
     /**
      * Obtient tous les commentaires associés à un article donné, triés par date de création décroissante

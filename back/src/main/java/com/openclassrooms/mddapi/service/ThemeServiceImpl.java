@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.entity.Theme;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.repository.ThemeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,9 @@ import java.util.List;
  * Implémentation du service pour gérer les opérations relatives aux thèmes
  */
 @Service
+@RequiredArgsConstructor
 public class ThemeServiceImpl implements ThemeService {
-    @Autowired
-    private ThemeRepository themeRepository;
+    private final ThemeRepository themeRepository;
 
     /**
      * Récupère un thème par son identifiant

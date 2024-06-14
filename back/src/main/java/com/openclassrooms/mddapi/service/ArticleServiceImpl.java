@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
  * Implémentation du service pour la gestion des articles
  */
 @Service
+@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
     /**
      * Récupère un article par son id
@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @throws ArticleNotFoundException si l'article n'a pas pu être enregistré
      */
     @Override
-    public void saveArticle(Article article) throws ArticleNotFoundException {
+    public void saveArticle(final Article article) throws ArticleNotFoundException {
         articleRepository.save(article);
     }
 
@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return La liste des articles associés au thème spécifié
      */
     @Override
-    public List<Article> getAllArticlesWithThemeId(Long id) {
+    public List<Article> getAllArticlesWithThemeId(final Long id) {
         return articleRepository.findByThemeIdOrderByCreeADesc(id);
     }
 
@@ -55,7 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return La liste des articles associés aux thèmes spécifiés
      */
     @Override
-    public List<Article> getAllArticlesInThemeIds(List<Long> ids) {
+    public List<Article> getAllArticlesInThemeIds(final List<Long> ids) {
         return articleRepository.findByThemeIdInOrderByCreeADesc(ids);
     }
 }
