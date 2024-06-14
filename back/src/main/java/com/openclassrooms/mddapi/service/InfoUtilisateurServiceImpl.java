@@ -5,7 +5,7 @@ import com.openclassrooms.mddapi.exception.EmailDejaUtiliseeException;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.exception.MotDePasseInvalideException;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,27 +15,24 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InfoUtilisateurServiceImpl implements InfoUtilisateurService {
-    @Autowired
-    private InfoUtilisateurRepository infoUtilisateur;
+    private final InfoUtilisateurRepository infoUtilisateur;
 
-    @Autowired
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Override
     public String modifierUtilisateur(InfoUtilisateur infoUser, boolean traiterMotDePasse) throws EmailDejaUtiliseeException, MotDePasseInvalideException {
         Optional<InfoUtilisateur> userDetail = infoUtilisateur.findByEmail(infoUser.getEmail());
 
-        //Throws Exception if Email is already registered AND it's not an update
-        if (userDetail.isPresent()){
-            if (Objects.equals(userDetail.get().getEmail(), infoUser.getEmail())) {
-                if (!Objects.equals(userDetail.get().getId(), infoUser.getId())) {
+        if (isUtilisateurPresent(userDetail)) {
+            if (isEmailEgal(userDetail.get(), infoUser)) {
+                if (isIdDifferent(userDetail.get(), infoUser)) {
                     throw new EmailDejaUtiliseeException();
                 }
             }
         }
 
-        //Otherwise it keeps on
         if (traiterMotDePasse) infoUser.setMotDePasse(encoder.encode(infoUser.getMotDePasse()));
         infoUtilisateur.save(infoUser);
         return "Utilisateur modifié";
@@ -72,5 +69,17 @@ public class InfoUtilisateurServiceImpl implements InfoUtilisateurService {
 
         return detailUtilisateur.map(InfoUtilisateurDetail::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + nomUtilisateur));
+    }
+
+    private boolean isUtilisateurPresent(Optional<InfoUtilisateur> userDetail) {
+        return userDetail.isPresent();
+    }
+
+    private boolean isEmailEgal(InfoUtilisateur userDetail, InfoUtilisateur infoUser) {
+        return Objects.equals(userDetail.getEmail(), infoUser.getEmail());
+    }
+
+    private boolean isIdDifferent(InfoUtilisateur userDetail, InfoUtilisateur infoUser) {
+        return !Objects.equals(userDetail.getId(), infoUser.getId());
     }
 }
