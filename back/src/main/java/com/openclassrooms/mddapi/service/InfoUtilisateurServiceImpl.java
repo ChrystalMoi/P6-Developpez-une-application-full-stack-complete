@@ -52,13 +52,13 @@ public class InfoUtilisateurServiceImpl implements InfoUtilisateurService {
     }
 
     @Override
-    public InfoUtilisateur getUserByUsername(String nom) throws EntiteNonTrouveeException {
+    public InfoUtilisateur getUtilisateurParNomUtilisateur(String nom) throws EntiteNonTrouveeException {
         return infoUtilisateur.findByEmail(nom)
                 .orElseThrow(() -> new EntiteNonTrouveeException(InfoUtilisateur.class,"email",nom));
     }
 
     @Override
-    public InfoUtilisateur getUserById(Long id) throws EntiteNonTrouveeException {
+    public InfoUtilisateur getUtilisateurParId(Long id) throws EntiteNonTrouveeException {
         return infoUtilisateur.findById(id)
                 .orElseThrow(() -> new EntiteNonTrouveeException(UserDetails.class,"id",id.toString()));
     }

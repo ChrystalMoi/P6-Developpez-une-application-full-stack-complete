@@ -14,12 +14,12 @@ public interface ThemeService {
      * @return Le thème correspondant à l'identifiant spécifier
      * @throws EntiteNonTrouveeException Si le thème associé à l'identifiant spécifié n'est pas trouvé
      */
-    Theme getThemeById(final Long id) throws EntiteNonTrouveeException;
+    Theme getThemeParId(final Long id) throws EntiteNonTrouveeException;
 
     /**
      * Récupère tous les thèmes disponibles
      *
      * @return Une liste contenant tous les thèmes disponibles
      */
-    List<Theme> getAllThemes();
+    List<Theme> getTousLesThemes();
 }

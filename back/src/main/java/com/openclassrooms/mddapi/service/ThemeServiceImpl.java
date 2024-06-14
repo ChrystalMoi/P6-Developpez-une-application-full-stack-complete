@@ -25,7 +25,7 @@ public class ThemeServiceImpl implements ThemeService {
      * @throws EntiteNonTrouveeException Si le thème associé à l'identifiant spécifié n'est pas trouvé
      */
     @Override
-    public Theme getThemeById(final Long id) throws EntiteNonTrouveeException {
+    public Theme getThemeParId(final Long id) throws EntiteNonTrouveeException {
         return themeRepository.findById(id)
                 .orElseThrow(() -> new EntiteNonTrouveeException(Theme.class, "id", id.toString()));
     }
@@ -36,7 +36,7 @@ public class ThemeServiceImpl implements ThemeService {
      * @return Une liste contenant tous les thèmes disponibles
      */
     @Override
-    public List<Theme> getAllThemes() {
+    public List<Theme> getTousLesThemes() {
         return themeRepository.findAll();
     }
 }

@@ -24,7 +24,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @throws ArticleNotFoundException si aucun article n'est trouvé avec l'id spécifié
      */
     @Override
-    public Article getArticleById(final Long articleId) throws ArticleNotFoundException {
+    public Article getArticleParId(final Long articleId) throws ArticleNotFoundException {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new ArticleNotFoundException(Article.class, "id", articleId.toString()));
     }
@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @throws ArticleNotFoundException si l'article n'a pas pu être enregistré
      */
     @Override
-    public void saveArticle(final Article article) throws ArticleNotFoundException {
+    public void enregistreArticle(final Article article) throws ArticleNotFoundException {
         articleRepository.save(article);
     }
 
@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return La liste des articles associés au thème spécifié
      */
     @Override
-    public List<Article> getAllArticlesWithThemeId(final Long id) {
+    public List<Article> getTousLesArticlesAvecThemeId(final Long id) {
         return articleRepository.findByThemeIdOrderByCreeADesc(id);
     }
 
@@ -55,7 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return La liste des articles associés aux thèmes spécifiés
      */
     @Override
-    public List<Article> getAllArticlesInThemeIds(final List<Long> ids) {
+    public List<Article> getTousLesArticlesDansLesThemeIds(final List<Long> ids) {
         return articleRepository.findByThemeIdInOrderByCreeADesc(ids);
     }
 }

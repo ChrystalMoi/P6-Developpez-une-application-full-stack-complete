@@ -12,7 +12,7 @@ public interface InfoUtilisateurService extends UserDetailsService {
 
     @Override
     default UserDetails loadUserByUsername(String nomUtilisateur) throws UsernameNotFoundException {
-        InfoUtilisateur infoUtilisateur = getUserByUsername(nomUtilisateur);
+        InfoUtilisateur infoUtilisateur = getUtilisateurParNomUtilisateur(nomUtilisateur);
         if (infoUtilisateur == null) {
             throw new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + nomUtilisateur);
         }
@@ -23,7 +23,7 @@ public interface InfoUtilisateurService extends UserDetailsService {
 
     String creerUtilisateur(InfoUtilisateur userInfo) throws EmailDejaUtiliseeException, MotDePasseInvalideException;
 
-    InfoUtilisateur getUserByUsername(String username) throws EntiteNonTrouveeException;
+    InfoUtilisateur getUtilisateurParNomUtilisateur(String username) throws EntiteNonTrouveeException;
 
-    InfoUtilisateur getUserById(Long id) throws EntiteNonTrouveeException;
+    InfoUtilisateur getUtilisateurParId(Long id) throws EntiteNonTrouveeException;
 }
