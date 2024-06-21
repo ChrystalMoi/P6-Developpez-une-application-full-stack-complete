@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentaireServiceImpl implements CommentaireService {
-    private final CommentaireRepository commentaireRepository;
+    private CommentaireRepository commentaireRepository;
 
     /**
      * Obtient tous les commentaires associés à un article donné, triés par date de création décroissante
