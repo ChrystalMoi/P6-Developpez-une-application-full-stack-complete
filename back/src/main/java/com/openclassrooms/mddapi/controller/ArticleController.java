@@ -112,7 +112,7 @@ public class ArticleController {
         commentaireDto.setContenu(content);
         commentaireDto.setUtilisateur_nom(nomUtilisateur);
 
-        // Transformer le DTO vers une entité de commentaire via le Mapper
+        // Transformer le DTO vers une entité de commentaire via le mapper
         Commentaire commentaire = commentaireMapper.toEntity(commentaireDto);
 
         // Appeler le service pour sauvegarder le commentaire
