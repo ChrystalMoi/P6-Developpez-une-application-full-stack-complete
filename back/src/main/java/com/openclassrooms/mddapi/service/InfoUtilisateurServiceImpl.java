@@ -17,9 +17,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class InfoUtilisateurServiceImpl implements InfoUtilisateurService {
-    private final InfoUtilisateurRepository infoUtilisateur;
+    private InfoUtilisateurRepository infoUtilisateur;
 
-    private final PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Override
     public String modifierUtilisateur(InfoUtilisateur infoUser, boolean traiterMotDePasse) throws EmailDejaUtiliseeException, MotDePasseInvalideException {
