@@ -12,10 +12,9 @@ import java.util.List;
  * Implémentation du service pour la gestion des articles
  */
 @Service
-@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private ArticleRepository articleRepository;
 
     /**
      * Récupère un article par son id
