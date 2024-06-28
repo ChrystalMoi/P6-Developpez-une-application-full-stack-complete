@@ -7,7 +7,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,16 +17,6 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-    private final JwtEncoder jwtEncoder;
-
-    /**
-     * Constructeur 
-     *
-     * @param jwtEncoder l'encodeur JWT utilisé pour encoder les tokens
-     */
-    public JwtService(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
-    }
 
     // Clé secrète utilisée pour signer les tokens JWT
     @Value("${jwt.secretKey}")
