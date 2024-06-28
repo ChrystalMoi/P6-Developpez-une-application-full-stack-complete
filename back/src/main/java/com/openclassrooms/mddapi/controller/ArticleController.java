@@ -74,7 +74,7 @@ public class ArticleController {
     @Secured("ROLE_USER") // Seuls les utilisateurs authentifiés peuvent accéder à /article/{id}
     public ArticleDto getArticleParId(@PathVariable("id") final long id) throws EntiteNonTrouveeException {
         Article article = articleService.getArticleParId(id);
-        return articleMapper.toDto(article);
+        return articleMapper.mapToDto(article);
     }
 
     /* ================================
@@ -113,7 +113,7 @@ public class ArticleController {
         commentaireDto.setUtilisateur_nom(nomUtilisateur);
 
         // Transformer le DTO vers une entité de commentaire via le mapper
-        Commentaire commentaire = commentaireMapper.toEntity(commentaireDto);
+        Commentaire commentaire = commentaireMapper.mapToEntite(commentaireDto);
 
         // Appeler le service pour sauvegarder le commentaire
         commentaireService.sauvegarderCommentaire(commentaire);
@@ -147,6 +147,6 @@ public class ArticleController {
     @GetMapping("/{id}/commentaire")
     public List<CommentaireDto> obtenirCommentairesPourArticle(@PathVariable("id") final long id) throws EntiteNonTrouveeException {
         List<Commentaire> commentaires = commentaireService.obtenirTousLesCommentairesAvecIdArticle(id);
-        return commentaireMapper.toDto(commentaires);
+        return commentaireMapper.mapToDto(commentaires);
     }
 }

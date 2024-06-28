@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ThemeServiceImpl implements ThemeService {
-    private final ThemeRepository themeRepository;
+    private ThemeRepository themeRepository;
 
     /**
      * Récupère un thème par son identifiant

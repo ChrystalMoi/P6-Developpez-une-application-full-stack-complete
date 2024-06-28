@@ -64,7 +64,7 @@ public class UtilisateurController {
     @GetMapping("/{id}")
     @Secured("ROLE_USER")
     public UtilisateurDto getUtilisateurParId(@PathVariable("id") final long id) throws EntiteNonTrouveeException {
-        return utilisateurMapper.toDto(infoUtilisateurService.getUtilisateurParId(id));
+        return utilisateurMapper.mapToDto(infoUtilisateurService.getUtilisateurParId(id));
     }
 
     /* ================================
@@ -93,7 +93,7 @@ public class UtilisateurController {
         List<Long> ids = infoUtilisateurService.getUtilisateurParId(id).getSubscriptions().stream()
                 .map(Theme::getId)
                 .collect(Collectors.toList());
-        return articleMapper.toDto(articleService.getTousLesArticlesDansLesThemeIds(ids));
+        return articleMapper.mapToDto(articleService.getTousLesArticlesDansLesThemeIds(ids));
     }
 
 }
