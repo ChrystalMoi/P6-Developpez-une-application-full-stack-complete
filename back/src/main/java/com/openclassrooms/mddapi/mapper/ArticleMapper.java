@@ -3,7 +3,11 @@ package com.openclassrooms.mddapi.mapper;
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.service.ArticleService;
+import com.openclassrooms.mddapi.service.ArticleServiceImpl;
 import com.openclassrooms.mddapi.service.InfoUtilisateurService;
+import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
+import com.openclassrooms.mddapi.service.ThemeService;
+import com.openclassrooms.mddapi.service.ThemeServiceImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -15,10 +19,10 @@ import org.springframework.stereotype.Component;
 public abstract class ArticleMapper implements DtoEntiteMapper<ArticleDto, Article>{
 
     @Autowired
-    private InfoUtilisateurService infoUtilisateurService;
+    InfoUtilisateurService infoUtilisateurService = new InfoUtilisateurServiceImpl();
 
     @Autowired
-    private ArticleService articleService;
+    ThemeService themeService = new ThemeServiceImpl();
 
     /**
      * Mappe un ArticleDto en une entité Article.
@@ -27,10 +31,10 @@ public abstract class ArticleMapper implements DtoEntiteMapper<ArticleDto, Artic
      * @return l'entité Article correspondante
      */
     @Mappings({
-            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUserById(articleDto.getUtilisateur_id()))"),
-            @Mapping(target = "theme", expression = "java(articleService.getArticleById(articleDto.getTheme_id()))")
+            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUtilisateurParId(articleDto.getUtilisateur_id()))"),
+            @Mapping(target = "theme", expression = "java(themeService.getThemeParId(articleDto.getTheme_id()))"),
     })
-    public abstract Article mapToEntity(ArticleDto articleDto);
+    public abstract Article mapToEntite(ArticleDto articleDto);
 
     /**
      * Mappe une entité Article en un DTO ArticleDto

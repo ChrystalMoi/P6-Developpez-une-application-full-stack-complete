@@ -16,15 +16,15 @@ public interface DtoEntiteMapper<Dto, Entite> {
      * @param dto l'objet de transfert de données à convertir
      * @return l'entité correspondante
      */
-    Entite toEntity(Dto dto);
+    Entite mapToEntite(Dto dto);
 
     /**
      * Convertit une entité en un DTO
      *
-     * @param entity l'entité à convertir
+     * @param entite l'entité à convertir
      * @return l'objet de transfert de données correspondant
      */
-    Dto toDto(Entite entity);
+    Dto mapToDto(Entite entite);
 
     /**
      * Convertit une liste de DTOs en une liste d'entités
@@ -32,7 +32,7 @@ public interface DtoEntiteMapper<Dto, Entite> {
      * @param dtoList la liste d'objets de transfert de données à convertir
      * @return la liste correspondante d'entités
      */
-    List<Entite> toEntity(List<Dto> dtoList);
+    List<Entite> mapToEntite(List<Dto> dtoList);
 
     /**
      * Convertit une liste d'entités en une liste de DTOs
@@ -40,5 +40,5 @@ public interface DtoEntiteMapper<Dto, Entite> {
      * @param entityList la liste d'entités à convertir
      * @return la liste correspondante d'objets de transfert de données
      */
-    List<Dto> toDto(List<Entite> entityList);
+    List<Dto> mapToDto(List<Entite> entityList);
 }

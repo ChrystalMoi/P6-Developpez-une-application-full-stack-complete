@@ -3,7 +3,9 @@ package com.openclassrooms.mddapi.mapper;
 import com.openclassrooms.mddapi.dto.CommentaireDto;
 import com.openclassrooms.mddapi.entity.Commentaire;
 import com.openclassrooms.mddapi.service.ArticleService;
+import com.openclassrooms.mddapi.service.ArticleServiceImpl;
 import com.openclassrooms.mddapi.service.InfoUtilisateurService;
+import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -15,10 +17,10 @@ import org.springframework.stereotype.Component;
 public abstract class CommentaireMapper implements DtoEntiteMapper<CommentaireDto, Commentaire>{
 
     @Autowired
-    private InfoUtilisateurService infoUtilisateurService;
+    InfoUtilisateurService infoUtilisateurService = new InfoUtilisateurServiceImpl();
 
     @Autowired
-    private ArticleService articleService;
+    ArticleService articleService = new ArticleServiceImpl();
 
     /**
      * Mappe un CommentaireDto en une entité Commentaire
@@ -27,10 +29,10 @@ public abstract class CommentaireMapper implements DtoEntiteMapper<CommentaireDt
      * @return l'entité Commentaire correspondante
      */
     @Mappings({
-            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUserById(commentaireDto.getUtilisateur_id()))"),
-            @Mapping(target = "article", expression = "java(articleService.getArticleById(commentaireDto.getArticle_id()))")
+            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUtilisateurParId(commentaireDto.getUtilisateur_id()))"),
+            @Mapping(target = "article", expression = "java(articleService.getArticleParId(commentaireDto.getArticle_id()))")
     })
-    public abstract Commentaire mapToEntity(CommentaireDto commentaireDto);
+    public abstract Commentaire mapToEntite(CommentaireDto commentaireDto);
 
     /**
      * Mappe une entité Commentaire en un DTO CommentaireDto

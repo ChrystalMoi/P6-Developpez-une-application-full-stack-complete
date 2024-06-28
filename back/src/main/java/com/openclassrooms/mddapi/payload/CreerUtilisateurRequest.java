@@ -1,6 +1,6 @@
-package com.openclassrooms.mddapi.dto;
+package com.openclassrooms.mddapi.payload;
 
-import com.openclassrooms.mddapi.entity.Theme;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,25 +8,24 @@ import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UtilisateurDto{
+public class CreerUtilisateurRequest {
 
-    private Long id;
-
+    @Size(max = 20)
     @NotNull
-    @Size(max=20)
     private String nom;
 
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,60}$")
+    private String motDePasse;
+
+    @Size(max = 50)
     @NotNull
-    @Size(max=50)
     @Email
     private String email;
-
-    private Set<Theme> subscriptions;
 }
