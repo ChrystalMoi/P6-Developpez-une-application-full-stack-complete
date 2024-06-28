@@ -18,5 +18,5 @@ public interface CommentaireRepository extends JpaRepository<Commentaire, Long> 
      * @param articleId l'ID de l'article
      * @return une liste de commentaires triés par date de création décroissante
      */
-    List<Commentaire> findCommentairesByArticleIdOrderByCreeADesc(Long articleId);
+    List<Commentaire> findCommentairesByArticleIdOrderByDateCreationDesc(Long articleId);
 }
