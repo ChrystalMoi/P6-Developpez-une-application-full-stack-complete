@@ -24,7 +24,7 @@ public class CommentaireServiceImpl implements CommentaireService {
      */
     @Override
     public List<Commentaire> obtenirTousLesCommentairesAvecIdArticle(final Long id) {
-        return commentaireRepository.findCommentairesByArticleIdOrderByCreeADesc(id);
+        return commentaireRepository.findCommentairesByArticleIdOrderByDateCreationDesc(id);
     }
 
     /**

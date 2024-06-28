@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public List<Article> getTousLesArticlesAvecThemeId(final Long id) {
-        return articleRepository.findByThemeIdOrderByCreeADesc(id);
+        return articleRepository.findByThemeIdOrderByDateCreationDesc(id);
     }
 
     /**
@@ -55,6 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public List<Article> getTousLesArticlesDansLesThemeIds(final List<Long> ids) {
-        return articleRepository.findByThemeIdInOrderByCreeADesc(ids);
+        return articleRepository.findByThemeIdInOrderByDateCreationDesc(ids);
     }
 }
