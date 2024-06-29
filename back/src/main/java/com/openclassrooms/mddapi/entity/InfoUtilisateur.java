@@ -40,7 +40,7 @@ public class InfoUtilisateur {
     private String email;
 
     @NotNull(message = "Le mot de passe ne peut pas être vide")
-    @Size(max = 20, message = "Le mot de passe ne peut pas dépasser {max} caractères")
+    //Pas de taille max ici à cause de BCrypt, à gérer dans le payload
     private String motDePasse;
 
     private String roles;
