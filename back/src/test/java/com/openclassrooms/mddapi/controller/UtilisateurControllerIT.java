@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
-import com.openclassrooms.mddapi.service.InfoUtilisateurService;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -13,16 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,6 +39,7 @@ class UtilisateurControllerIT {
             .email("utilisateur1@test.com")
             .nom("Util1")
             .motDePasse(passwordEncoder.encode("AB12cd34"))
+            .roles("ROLE_USER")
             .build();
 
     @BeforeEach

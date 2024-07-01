@@ -1,0 +1,205 @@
+package com.openclassrooms.mddapi.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.mddapi.entity.InfoUtilisateur;
+import com.openclassrooms.mddapi.payload.AuthentificationRequest;
+import com.openclassrooms.mddapi.payload.CreerUtilisateurRequest;
+import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
+import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
+import com.openclassrooms.mddapi.service.JwtService;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class AuthControllerIT {
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    InfoUtilisateurRepository repository;
+    @Autowired
+    InfoUtilisateurServiceImpl infoUtilisateurService;
+    @Autowired
+    JwtService jwtService;
+
+    final ObjectMapper mapper=new ObjectMapper();
+    final static PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
+    final InfoUtilisateur utilisateur1= InfoUtilisateur.builder()
+            .email("utilisateur1@test.com")
+            .nom("Util1")
+            .motDePasse(passwordEncoder.encode("AB12cd34"))
+            .roles("ROLE_USER")
+            .build();
+
+    final InfoUtilisateur utilisateur2= InfoUtilisateur.builder()
+            .email("utilisateur2@test.com")
+            .nom("Util2")
+            .motDePasse(passwordEncoder.encode("Aa123456!"))
+            .roles("ROLE_USER")
+            .build();
+
+    @BeforeEach
+    void init(){
+        clean();
+        repository.save(utilisateur1);
+    }
+
+    @AfterEach
+    void clean() {
+        repository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye d'ajouter un utilisateur correct, tout est OK")
+    void creerUtilisateurOk() throws Exception {
+        //Given
+        CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
+                .nom("Util2")
+                .email("utilisateur2@test.com")
+                .motDePasse("Aa123456!")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye d'ajouter un utilisateur avec une adresse qui existe déjà, il y a une erreur")
+    void creerUtilisateurErr() throws Exception {
+        //Given
+        CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
+                .nom("Util1")
+                .email("utilisateur1@test.com")
+                .motDePasse("Aa123456!")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye d'ajouter un utilisateur avec un mot de passe incorrect, il y a une erreur")
+    void creerUtilisateurErr2() throws Exception {
+        //Given
+        CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
+                .nom("Util2")
+                .email("utilisateur2@test.com")
+                .motDePasse("z")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de me logguer avec les bons identifiants, tout est OK")
+    void logUtilisateurOk() throws Exception {
+        //Given
+        AuthentificationRequest request= AuthentificationRequest.builder()
+                .email("utilisateur1@test.com")
+                .motDePasse("AB12cd34")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/login" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("token")));
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de me logguer avec un mauvais mot de passe, il y a une erreur")
+    void logUtilisateurErr() throws Exception {
+        //Given
+        AuthentificationRequest request= AuthentificationRequest.builder()
+                .email("utilisateur1@test.com")
+                .motDePasse("motDePasseErreur42!")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/login" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de me logguer avec un mauvais email, il y a une erreur")
+    void logUtilisateurErr2() throws Exception {
+        //Given
+        AuthentificationRequest request= AuthentificationRequest.builder()
+                .email("utilisateurInexistant@test.com")
+                .motDePasse("AB12cd34")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/login" )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye d'obtenir mes informations, j'obtiens mon Dto")
+    void meUtilisateurOk() throws Exception {
+        //Given
+        repository.save(utilisateur2);
+        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" )
+                        .header("Authorization","Bearer "+jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Util2")))
+                .andExpect(content().string(CoreMatchers.not(containsString("motDePasse"))));
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye d'obtenir des informations sans jwt, il y a une erreur")
+    void meUtilisateurErr() throws Exception {
+        //Given
+        repository.save(utilisateur2);
+        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" ))
+                //Then
+                .andExpect(status().isUnauthorized());
+    }
+}
