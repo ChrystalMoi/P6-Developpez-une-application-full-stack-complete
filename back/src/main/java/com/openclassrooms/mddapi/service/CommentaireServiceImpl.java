@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.entity.Commentaire;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.repository.CommentaireRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentaireServiceImpl implements CommentaireService {
+    @Autowired
     private CommentaireRepository commentaireRepository;
 
     /**
