@@ -27,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,7 +74,11 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Accès non autorisé")
     })
     @PostMapping("/register")
-    public Map<String, String> register(@Valid @RequestBody CreerUtilisateurRequest creerUtilisateurRequest) {
+    public Map<String, String> register(@RequestBody CreerUtilisateurRequest creerUtilisateurRequest) {
+        System.out.println("Nom: " + creerUtilisateurRequest.getNom());
+        System.out.println("Email: " + creerUtilisateurRequest.getEmail());
+        System.out.println("MotDePasse: " + creerUtilisateurRequest.getMotDePasse());
+
         // Créer un nouvel utilisateur avec les informations fournies
         InfoUtilisateur infoUtilisateur = InfoUtilisateur.builder()
                 .nom(creerUtilisateurRequest.getNom())
@@ -91,7 +96,6 @@ public class AuthController {
         // Retourner le token dans une réponse sous forme de map
         return Collections.singletonMap("token", token);
     }
-
 
     /* ================================
         auth/login (POST)
