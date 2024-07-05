@@ -2,8 +2,6 @@ package com.openclassrooms.mddapi.mapper;
 
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.entity.Article;
-import com.openclassrooms.mddapi.service.ArticleService;
-import com.openclassrooms.mddapi.service.ArticleServiceImpl;
 import com.openclassrooms.mddapi.service.InfoUtilisateurService;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import com.openclassrooms.mddapi.service.ThemeService;

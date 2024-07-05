@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
+    @Autowired
     private ArticleRepository articleRepository;
 
     /**

@@ -76,6 +76,40 @@ public class ThemeController {
     }
 
     /* ================================
+        /theme (POST)
+    ================================*/
+    /**
+     * Crée un nouveau thème
+     *
+     * @param theme Les détails du thème à créer
+     * @return Un message indiquant que le thème a été créé avec succès
+     */
+    @Operation(
+            summary = "Crée un nouveau thème",
+            description = "Permet à un utilisateur administrateur de créer un nouveau thème",
+            tags = { "Thèmes" }
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Thème créé avec succès"),
+            @ApiResponse(responseCode = "400", description = "Détails du thème invalides"),
+            @ApiResponse(responseCode = "401", description = "Accès non autorisé"),
+            @ApiResponse(responseCode = "403", description = "Accès refusé")
+    })
+    @PostMapping("")
+    public Map<String, String> creerTheme(
+            @Parameter(description = "Détails du thème à créer", required = true)
+            @RequestBody Theme theme
+    ) {
+        // Enregistrement du thème dans la base de données
+        themeService.enregistrerTheme(theme);
+
+        // Création de la réponse avec un message de confirmation
+        Map<String, String> map = new HashMap<>();
+        map.put("response", "Thème créé avec succès");
+        return map;
+    }
+
+    /* ================================
         /theme/{id} (GET)
     ================================*/
     /**
@@ -139,9 +173,11 @@ public class ThemeController {
     ) throws EntiteNonTrouveeException {
         // Extraction du nom d'utilisateur à partir du token JWT
         String nomUtilisateur = jwtService.extractNomUtilisateur(jwt.substring(7));
+        System.out.println("Nom d'utilisateur extrait du JWT: " + nomUtilisateur);
 
         // Récupération de l'utilisateur à partir du nom d'utilisateur
         InfoUtilisateur utilisateur = infoUtilisateurService.getUtilisateurParNomUtilisateur(nomUtilisateur);
+        System.out.println("Utilisateur récupéré: " + utilisateur);
 
         // Construction de l'objet Article à partir des données reçues
         Article article = Article.builder()
@@ -150,17 +186,19 @@ public class ThemeController {
                 .nomUtilisateur(utilisateur)
                 .theme(themeService.getThemeParId(id))
                 .build();
+        System.out.println("Article construit: " + article);
 
         // Enregistrement de l'article dans la base de données
         articleService.enregistreArticle(article);
+        System.out.println("Article enregistré: " + article);
 
         // Création de la réponse avec un message de confirmation
         Map<String, String> map = new HashMap<>();
         map.put("response", "Article créé avec succès");
+        System.out.println("Réponse: " + map);
 
         return map;
     }
-
 
     /* ================================
         /theme/{id}/subscription (POST)
@@ -218,7 +256,6 @@ public class ThemeController {
             return "Le thème est déjà abonné";
         }
     }
-
 
     /* ================================
         /theme/{id}/subscription (DELETE)

@@ -15,6 +15,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ThemeServiceImpl implements ThemeService {
+
+    @Autowired
     private ThemeRepository themeRepository;
 
     /**
@@ -38,5 +40,10 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     public List<Theme> getTousLesThemes() {
         return themeRepository.findAll();
+    }
+
+    @Override
+    public void enregistrerTheme(Theme theme) {
+        themeRepository.save(theme);
     }
 }

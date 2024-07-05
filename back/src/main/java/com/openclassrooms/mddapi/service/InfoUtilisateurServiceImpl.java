@@ -5,7 +5,6 @@ import com.openclassrooms.mddapi.exception.EmailDejaUtiliseeException;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.exception.MotDePasseInvalideException;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,7 @@ public class InfoUtilisateurServiceImpl implements InfoUtilisateurService {
     @Autowired
     private InfoUtilisateurRepository infoUtilisateur;
 
-    private final PasswordEncoder encoder=new BCryptPasswordEncoder();
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     public String modifierUtilisateur(InfoUtilisateur infoUser, boolean traiterMotDePasse) throws EmailDejaUtiliseeException, MotDePasseInvalideException {
