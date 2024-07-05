@@ -22,4 +22,6 @@ public interface ThemeService {
      * @return Une liste contenant tous les thèmes disponibles
      */
     List<Theme> getTousLesThemes();
+
+    void enregistrerTheme(Theme theme);
 }
