@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.payload.AuthentificationRequest;
 import com.openclassrooms.mddapi.payload.CreerUtilisateurRequest;
+import com.openclassrooms.mddapi.payload.ModificationUtilisateurRequest;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import com.openclassrooms.mddapi.service.JwtService;
@@ -24,6 +25,9 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -201,5 +205,72 @@ class AuthControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" ))
                 //Then
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de modifier mes informations, tout est OK")
+    void patchUtilisateurOk() throws Exception {
+        //Given
+        repository.save(utilisateur2);
+        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+
+        ModificationUtilisateurRequest request= ModificationUtilisateurRequest.builder()
+                .nom("Util42")
+                .motDePasse("AZERtyui123456")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+                        .header("Authorization","Bearer "+jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isOk());
+
+        Optional<InfoUtilisateur> candidate=repository.findByEmail("utilisateur2@test.com");
+        assertThat(candidate).isPresent();
+        InfoUtilisateur user=candidate.get();
+        assertThat(user.getNom()).isEqualTo("Util42");
+        assertThat(user.getMotDePasse()).doesNotContain("AZERtyui123456");
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de modifier mes informations avec un email déjà pris, il y a une erreur")
+    void patchUtilisateurErr() throws Exception {
+        //Given
+        repository.save(utilisateur2);
+        String jwt = jwtService.generateToken(utilisateur2.getEmail());
+
+        ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
+                .email("utilisateur1@test.com")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+                        .header("Authorization", "Bearer " + jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand j'essaye de modifier mes informations avec des données incorrectes, il y a une erreur")
+    void patchUtilisateurErr2() throws Exception {
+        //Given
+        repository.save(utilisateur2);
+        String jwt = jwtService.generateToken(utilisateur2.getEmail());
+
+        ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
+                .email("utilisateur1")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+                        .header("Authorization", "Bearer " + jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                //Then
+                .andExpect(status().isBadRequest());
     }
 }
