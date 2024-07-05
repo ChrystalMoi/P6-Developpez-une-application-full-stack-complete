@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.mddapi.TestContent;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.entity.Theme;
@@ -49,54 +50,10 @@ class UtilisateurControllerIT {
     ThemeRepository themeRepository;
     @Autowired
     ThemeServiceImpl themeService;
+    @Autowired
+    TestContent testContent;
 
     final ObjectMapper mapper=new ObjectMapper();
-    final static PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-
-    final InfoUtilisateur utilisateur1= InfoUtilisateur.builder()
-            .email("utilisateur1@test.com")
-            .nom("Util1")
-            .motDePasse(passwordEncoder.encode("AB12cd34"))
-            .roles("ROLE_USER")
-            .build();
-
-    final InfoUtilisateur utilisateur2= InfoUtilisateur.builder()
-            .email("utilisateur2@test.com")
-            .nom("Util2")
-            .motDePasse(passwordEncoder.encode("Aa123456!"))
-            .roles("ROLE_USER")
-            .build();
-
-    final Theme theme1=Theme.builder()
-            .nom("Algorithmique")
-            .description("Ca parle d'algorithmique")
-            .build();
-
-    final Theme theme2=Theme.builder()
-            .nom("Informatique")
-            .description("Ca ne parle d'algos")
-            .build();
-
-    final Article article1=Article.builder()
-            .titre("Art 1")
-            .theme(theme1)
-            .contenu("Contenu passionnant n°1")
-            .nomUtilisateur(utilisateur1)
-            .build();
-
-    final Article article2=Article.builder()
-            .titre("Art 2")
-            .theme(theme2)
-            .contenu("Contenu passionnant n°2")
-            .nomUtilisateur(utilisateur2)
-            .build();
-
-    final Article article3=Article.builder()
-            .titre("Art 3")
-            .theme(theme1)
-            .contenu("Contenu passionnant n°3")
-            .nomUtilisateur(utilisateur2)
-            .build();
 
     @BeforeEach
     @AfterEach
@@ -111,7 +68,7 @@ class UtilisateurControllerIT {
     @WithMockUser
     void getUtilisateurOk() throws Exception {
         //Given
-        Long id=repository.save(utilisateur1).getId();
+        Long id=repository.save(testContent.utilisateur1).getId();
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id))
                 //Then
@@ -125,7 +82,7 @@ class UtilisateurControllerIT {
     @WithMockUser
     void getUtilisateurErr() throws Exception {
         //Given
-        Long id=repository.save(utilisateur1).getId()+100;
+        Long id=repository.save(testContent.utilisateur1).getId()+100;
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id))
                 //Then
@@ -138,16 +95,16 @@ class UtilisateurControllerIT {
     void getArticlesOk() throws Exception {
         //Given
 
-        themeRepository.save(theme1);
-        themeRepository.save(theme2);
+        themeRepository.save(testContent.theme1);
+        themeRepository.save(testContent.theme2);
 
-        repository.save(utilisateur1);
-        utilisateur2.setSubscriptions(Set.of(theme1));
-        Long id=repository.save(utilisateur2).getId();
+        repository.save(testContent.utilisateur1);
+        testContent.utilisateur2.setSubscriptions(Set.of(testContent.theme1));
+        Long id=repository.save(testContent.utilisateur2).getId();
 
-        articleRepository.save(article1);
-        articleRepository.save(article2);
-        articleRepository.save(article3);
+        articleRepository.save(testContent.article1);
+        articleRepository.save(testContent.article2);
+        articleRepository.save(testContent.article3);
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/"+ id +"/articles"))

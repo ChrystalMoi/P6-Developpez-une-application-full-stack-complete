@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.mddapi.TestContent;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.payload.AuthentificationRequest;
 import com.openclassrooms.mddapi.payload.CreerUtilisateurRequest;
@@ -9,7 +10,6 @@ import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import com.openclassrooms.mddapi.service.JwtService;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -43,28 +39,15 @@ class AuthControllerIT {
     InfoUtilisateurServiceImpl infoUtilisateurService;
     @Autowired
     JwtService jwtService;
+    @Autowired
+    TestContent testContent;
 
     final ObjectMapper mapper=new ObjectMapper();
-    final static PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-
-    final InfoUtilisateur utilisateur1= InfoUtilisateur.builder()
-            .email("utilisateur1@test.com")
-            .nom("Util1")
-            .motDePasse(passwordEncoder.encode("AB12cd34"))
-            .roles("ROLE_USER")
-            .build();
-
-    final InfoUtilisateur utilisateur2= InfoUtilisateur.builder()
-            .email("utilisateur2@test.com")
-            .nom("Util2")
-            .motDePasse(passwordEncoder.encode("Aa123456!"))
-            .roles("ROLE_USER")
-            .build();
 
     @BeforeEach
     void init(){
         clean();
-        repository.save(utilisateur1);
+        repository.save(testContent.utilisateur1);
     }
 
     @AfterEach
@@ -182,8 +165,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'obtenir mes informations, j'obtiens mon Dto")
     void meUtilisateurOk() throws Exception {
         //Given
-        repository.save(utilisateur2);
-        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+        repository.save(testContent.utilisateur2);
+        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" )
@@ -198,8 +181,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'obtenir des informations sans jwt, il y a une erreur")
     void meUtilisateurErr() throws Exception {
         //Given
-        repository.save(utilisateur2);
-        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+        repository.save(testContent.utilisateur2);
+        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" ))
@@ -211,8 +194,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations, tout est OK")
     void patchUtilisateurOk() throws Exception {
         //Given
-        repository.save(utilisateur2);
-        String jwt= jwtService.generateToken(utilisateur2.getEmail());
+        repository.save(testContent.utilisateur2);
+        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request= ModificationUtilisateurRequest.builder()
                 .nom("Util42")
@@ -220,7 +203,7 @@ class AuthControllerIT {
                 .build();
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+        mockMvc.perform(MockMvcRequestBuilders.put("/auth/me")
                         .header("Authorization","Bearer "+jwt)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
@@ -238,15 +221,15 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations avec un email déjà pris, il y a une erreur")
     void patchUtilisateurErr() throws Exception {
         //Given
-        repository.save(utilisateur2);
-        String jwt = jwtService.generateToken(utilisateur2.getEmail());
+        repository.save(testContent.utilisateur2);
+        String jwt = jwtService.generateToken(testContent.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
                 .email("utilisateur1@test.com")
                 .build();
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+        mockMvc.perform(MockMvcRequestBuilders.put("/auth/me")
                         .header("Authorization", "Bearer " + jwt)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
@@ -258,15 +241,15 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations avec des données incorrectes, il y a une erreur")
     void patchUtilisateurErr2() throws Exception {
         //Given
-        repository.save(utilisateur2);
-        String jwt = jwtService.generateToken(utilisateur2.getEmail());
+        repository.save(testContent.utilisateur2);
+        String jwt = jwtService.generateToken(testContent.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
                 .email("utilisateur1")
                 .build();
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.patch("/auth/me")
+        mockMvc.perform(MockMvcRequestBuilders.put("/auth/me")
                         .header("Authorization", "Bearer " + jwt)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
