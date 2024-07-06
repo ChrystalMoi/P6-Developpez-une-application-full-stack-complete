@@ -25,8 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,11 +73,7 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Accès non autorisé")
     })
     @PostMapping("/register")
-    public Map<String, String> register(@RequestBody CreerUtilisateurRequest creerUtilisateurRequest) {
-        System.out.println("Nom: " + creerUtilisateurRequest.getNom());
-        System.out.println("Email: " + creerUtilisateurRequest.getEmail());
-        System.out.println("MotDePasse: " + creerUtilisateurRequest.getMotDePasse());
-
+    public Map<String, String> register(@Valid @RequestBody CreerUtilisateurRequest creerUtilisateurRequest) {
         // Créer un nouvel utilisateur avec les informations fournies
         InfoUtilisateur infoUtilisateur = InfoUtilisateur.builder()
                 .nom(creerUtilisateurRequest.getNom())
@@ -96,6 +92,7 @@ public class AuthController {
         return Collections.singletonMap("token", token);
     }
 
+
     /* ================================
         auth/login (POST)
     ================================*/
@@ -113,7 +110,8 @@ public class AuthController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Authentification réussie et token JWT généré"),
-            @ApiResponse(responseCode = "401", description = "Identifiants invalides")
+            @ApiResponse(responseCode = "401", description = "Identifiants invalides"),
+            @ApiResponse(responseCode = "403", description = "Accès non autorisé")
     })
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody AuthentificationRequest requeteAuthentification) {
@@ -164,7 +162,7 @@ public class AuthController {
     }
 
     /* ================================
-        auth/me (PATCH)
+        auth/me (PUT)
     ================================*/
     /**
      * Modifie le profil de l'utilisateur connecté
@@ -187,7 +185,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Accès non autorisé"),
             @ApiResponse(responseCode = "403", description = "Accès refusé")
     })
-    @PatchMapping("/me")
+    @PutMapping("/me")
     @Secured("ROLE_USER")
     public Map<String, String> modificationProfilUtilisateur(
             @RequestHeader(value = "Authorization", required = false) String jwt,

@@ -60,6 +60,7 @@ public class JwtService {
      */
     private Key getCleSignature() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        System.out.println("Clé secrète utilisée : " + secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
