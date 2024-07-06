@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.mddapi.TestContent;
+import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.entity.Theme;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
@@ -22,6 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -96,5 +99,112 @@ class ThemeControllerIT {
         assertThat(repository.findAll().size()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("Quand je veux obtenir  un thème particulier, tout est OK")
+    void getThemeByIdOk() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme1);
+        Long id=repository.save(tc.theme2).getId();
 
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/theme/" + id)
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Informatique")));
+    }
+
+    @Test
+    @DisplayName("Quand je veux obtenir  un thème particulier inexistant, il y a une erreur")
+    void getThemeByIdErr() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme1);
+        Long id=repository.save(tc.theme2).getId()+23456;
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/theme/" + id)
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Quand je veux créer un article sur un thème, tout est OK")
+    void postArticleOk() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme1);
+        Long id=repository.save(tc.theme2).getId();
+
+        ArticleDto nouvelArticleDto= ArticleDto.builder()
+                .titre("Linux")
+                .contenu("Linux est un OS")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/theme/" + id + "/articles")
+                        .header("Authorization","Bearer " + jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(nouvelArticleDto)))
+                //Then
+                .andExpect(status().isOk());
+        assertThat(articleRepository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Quand je veux créer un article sur un thème inexistant, il y a une erreur")
+    void postArticleErr() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme1);
+        Long id=repository.save(tc.theme2).getId() + 99999;
+
+        ArticleDto nouvelArticleDto= ArticleDto.builder()
+                .titre("Linux")
+                .contenu("Linux est un OS")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/theme/" + id + "/articles")
+                        .header("Authorization","Bearer " + jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(nouvelArticleDto)))
+                //Then
+                .andExpect(status().isBadRequest());
+        assertThat(articleRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Quand je veux créer un article incorrect, il y a une erreur")
+    void postArticleErr2() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme1);
+        Long id=repository.save(tc.theme2).getId();
+
+        ArticleDto nouvelArticleDto= ArticleDto.builder()
+                .contenu("Un contenu sans titre")
+                .build();
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/theme/" + id + "/articles")
+                        .header("Authorization","Bearer " + jwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(nouvelArticleDto)))
+                //Then
+                .andExpect(status().isBadRequest());
+        assertThat(articleRepository.findAll().size()).isEqualTo(0);
+    }
 }
