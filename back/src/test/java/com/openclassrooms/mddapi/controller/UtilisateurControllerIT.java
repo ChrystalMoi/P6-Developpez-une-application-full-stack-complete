@@ -10,6 +10,7 @@ import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
 import com.openclassrooms.mddapi.repository.ThemeRepository;
 import com.openclassrooms.mddapi.service.ArticleServiceImpl;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
+import com.openclassrooms.mddapi.service.JwtService;
 import com.openclassrooms.mddapi.service.ThemeServiceImpl;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,7 @@ class UtilisateurControllerIT {
     @Autowired
     ThemeServiceImpl themeService;
     @Autowired
-    TestContent testContent;
+    JwtService jwtService;
 
     final ObjectMapper mapper=new ObjectMapper();
 
@@ -65,12 +66,14 @@ class UtilisateurControllerIT {
 
     @Test
     @DisplayName("Quand je réclame les informations d'un utilisateur existant, j'obtiens son DTO")
-    @WithMockUser
     void getUtilisateurOk() throws Exception {
         //Given
-        Long id=repository.save(testContent.utilisateur1).getId();
+        TestContent tc=new TestContent();
+        Long id=repository.save(tc.utilisateur1).getId();
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
         //When
-        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id))
+        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id)
+                        .header("Authorization","Bearer " + jwt))
                 //Then
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("utilisateur1@test.com")))
@@ -79,35 +82,39 @@ class UtilisateurControllerIT {
 
     @Test
     @DisplayName("Quand je réclame les informations d'un utilisateur inexistant, j'obtiens une erreur")
-    @WithMockUser
     void getUtilisateurErr() throws Exception {
         //Given
-        Long id=repository.save(testContent.utilisateur1).getId()+100;
+        TestContent tc=new TestContent();
+        Long id=repository.save(tc.utilisateur1).getId()+100;
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
         //When
-        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id))
+        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id)
+                        .header("Authorization","Bearer " + jwt))
                 //Then
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Quand je réclame la liste des articles des thèmes auxquels un utilisateur est abonné, tout est OK")
-    @WithMockUser
     void getArticlesOk() throws Exception {
         //Given
+        TestContent tc=new TestContent();
 
-        themeRepository.save(testContent.theme1);
-        themeRepository.save(testContent.theme2);
+        themeRepository.save(tc.theme1);
+        themeRepository.save(tc.theme2);
 
-        repository.save(testContent.utilisateur1);
-        testContent.utilisateur2.setSubscriptions(Set.of(testContent.theme1));
-        Long id=repository.save(testContent.utilisateur2).getId();
+        repository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        tc.utilisateur2.setSubscriptions(Set.of(tc.theme1));
+        Long id=repository.save(tc.utilisateur2).getId();
 
-        articleRepository.save(testContent.article1);
-        articleRepository.save(testContent.article2);
-        articleRepository.save(testContent.article3);
+        articleRepository.save(tc.article1);
+        articleRepository.save(tc.article2);
+        articleRepository.save(tc.article3);
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/"+ id +"/articles"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/"+ id +"/articles")
+                        .header("Authorization","Bearer " + jwt))
                 //Then
                 .andDo(print())
                 .andExpect(status().isOk());

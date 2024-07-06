@@ -39,17 +39,10 @@ class AuthControllerIT {
     InfoUtilisateurServiceImpl infoUtilisateurService;
     @Autowired
     JwtService jwtService;
-    @Autowired
-    TestContent testContent;
 
     final ObjectMapper mapper=new ObjectMapper();
 
     @BeforeEach
-    void init(){
-        clean();
-        repository.save(testContent.utilisateur1);
-    }
-
     @AfterEach
     void clean() {
         repository.deleteAll();
@@ -59,6 +52,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'ajouter un utilisateur correct, tout est OK")
     void creerUtilisateurOk() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
                 .nom("Util2")
                 .email("utilisateur2@test.com")
@@ -77,6 +72,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'ajouter un utilisateur avec une adresse qui existe déjà, il y a une erreur")
     void creerUtilisateurErr() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
                 .nom("Util1")
                 .email("utilisateur1@test.com")
@@ -95,6 +92,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'ajouter un utilisateur avec un mot de passe incorrect, il y a une erreur")
     void creerUtilisateurErr2() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         CreerUtilisateurRequest request= CreerUtilisateurRequest.builder()
                 .nom("Util2")
                 .email("utilisateur2@test.com")
@@ -113,6 +112,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de me logguer avec les bons identifiants, tout est OK")
     void logUtilisateurOk() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         AuthentificationRequest request= AuthentificationRequest.builder()
                 .email("utilisateur1@test.com")
                 .motDePasse("AB12cd34")
@@ -131,6 +132,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de me logguer avec un mauvais mot de passe, il y a une erreur")
     void logUtilisateurErr() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         AuthentificationRequest request= AuthentificationRequest.builder()
                 .email("utilisateur1@test.com")
                 .motDePasse("motDePasseErreur42!")
@@ -148,6 +151,8 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de me logguer avec un mauvais email, il y a une erreur")
     void logUtilisateurErr2() throws Exception {
         //Given
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
         AuthentificationRequest request= AuthentificationRequest.builder()
                 .email("utilisateurInexistant@test.com")
                 .motDePasse("AB12cd34")
@@ -165,8 +170,10 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'obtenir mes informations, j'obtiens mon Dto")
     void meUtilisateurOk() throws Exception {
         //Given
-        repository.save(testContent.utilisateur2);
-        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
+        repository.save(tc.utilisateur2);
+        String jwt= jwtService.generateToken(tc.utilisateur2.getEmail());
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" )
@@ -181,8 +188,10 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye d'obtenir des informations sans jwt, il y a une erreur")
     void meUtilisateurErr() throws Exception {
         //Given
-        repository.save(testContent.utilisateur2);
-        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
+        repository.save(tc.utilisateur2);
+        String jwt= jwtService.generateToken(tc.utilisateur2.getEmail());
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" ))
@@ -194,8 +203,10 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations, tout est OK")
     void patchUtilisateurOk() throws Exception {
         //Given
-        repository.save(testContent.utilisateur2);
-        String jwt= jwtService.generateToken(testContent.utilisateur2.getEmail());
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
+        repository.save(tc.utilisateur2);
+        String jwt= jwtService.generateToken(tc.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request= ModificationUtilisateurRequest.builder()
                 .nom("Util42")
@@ -221,8 +232,10 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations avec un email déjà pris, il y a une erreur")
     void patchUtilisateurErr() throws Exception {
         //Given
-        repository.save(testContent.utilisateur2);
-        String jwt = jwtService.generateToken(testContent.utilisateur2.getEmail());
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
+        repository.save(tc.utilisateur2);
+        String jwt = jwtService.generateToken(tc.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
                 .email("utilisateur1@test.com")
@@ -241,8 +254,10 @@ class AuthControllerIT {
     @DisplayName("Quand j'essaye de modifier mes informations avec des données incorrectes, il y a une erreur")
     void patchUtilisateurErr2() throws Exception {
         //Given
-        repository.save(testContent.utilisateur2);
-        String jwt = jwtService.generateToken(testContent.utilisateur2.getEmail());
+        TestContent tc=new TestContent();
+        repository.save(tc.utilisateur1);
+        repository.save(tc.utilisateur2);
+        String jwt = jwtService.generateToken(tc.utilisateur2.getEmail());
 
         ModificationUtilisateurRequest request = ModificationUtilisateurRequest.builder()
                 .email("utilisateur1")
