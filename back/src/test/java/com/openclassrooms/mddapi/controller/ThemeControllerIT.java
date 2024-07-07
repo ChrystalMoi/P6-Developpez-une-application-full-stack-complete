@@ -22,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -206,5 +208,79 @@ class ThemeControllerIT {
                 //Then
                 .andExpect(status().isBadRequest());
         assertThat(articleRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Quand je veux m'abonner à une session (à laquelle je ne suis pas abonné), tout est OK")
+    void subscribeOk() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        Long id=repository.save(tc.theme1).getId();
+        repository.save(tc.theme2);
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/theme/" + id + "/subscription")
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("L'abonnement au thème a été réalisé avec succès")));
+    }
+
+    @Test
+    @DisplayName("Quand je veux m'abonner à une session à laquelle je suis déjà abonné, il y a un Warning")
+    void subscribeWarn() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        Long id=repository.save(tc.theme1).getId();
+        tc.utilisateur1.setSubscriptions(Set.of(tc.theme1));
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme2);
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/theme/" + id + "/subscription")
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Le thème est déjà abonné")));
+    }
+
+    @Test
+    @DisplayName("Quand je veux me désabonner d'une session (à laquelle je suis abonné), tout est OK")
+    void unubscribeOk() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        Long id=repository.save(tc.theme1).getId();
+        tc.utilisateur1.setSubscriptions(Set.of(tc.theme1));
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        repository.save(tc.theme2);
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/theme/" + id + "/subscription")
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Désabonnement réussi")));
+    }
+
+    @Test
+    @DisplayName("Quand je veux me désabonner d'une session à laquelle je ne suis pas déjà abonné, il y a un Warning")
+    void unsubscribeWarn() throws Exception {
+        //Given
+        TestContent tc=new TestContent();
+        infoUtilisateurRepository.save(tc.utilisateur1);
+        String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
+        Long id=repository.save(tc.theme1).getId();
+        repository.save(tc.theme2);
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/theme/" + id + "/subscription")
+                        .header("Authorization","Bearer " + jwt))
+                //Then
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Le thème n'était pas abonné")));
     }
 }

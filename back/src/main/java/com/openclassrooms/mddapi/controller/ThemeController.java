@@ -246,7 +246,7 @@ public class ThemeController {
         // Ajout du thème aux abonnements de l'utilisateur et vérification si l'ajout a été effectué
         boolean aEteAbonne = userSubscriptions.add(theme);
 
-        // Si l'abonnement a été ajouter avec succès
+        // Si l'abonnement a été ajouté avec succès
         if (aEteAbonne) {
             // Mise à jour des abonnements de l'utilisateur dans la base de données
             infoUtilisateurService.modifierUtilisateur(utilisateur, false);
