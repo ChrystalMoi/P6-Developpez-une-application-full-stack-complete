@@ -60,8 +60,8 @@ class UtilisateurControllerIT {
     @AfterEach
     void init() {
         articleRepository.deleteAll();
-        themeRepository.deleteAll();
         repository.deleteAll();
+        themeRepository.deleteAll();
     }
 
     @Test
@@ -116,7 +116,6 @@ class UtilisateurControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/"+ id +"/articles")
                         .header("Authorization","Bearer " + jwt))
                 //Then
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 }

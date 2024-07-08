@@ -55,8 +55,8 @@ class ThemeControllerIT {
     @AfterEach
     void clean() {
         articleRepository.deleteAll();
-        repository.deleteAll();
         infoUtilisateurRepository.deleteAll();
+        repository.deleteAll();
     }
 
     @Test

@@ -1,12 +1,17 @@
 package com.openclassrooms.mddapi;
 
 import com.openclassrooms.mddapi.entity.Article;
+import com.openclassrooms.mddapi.entity.Commentaire;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.entity.Theme;
+import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
+@Data
 public class TestContent {
     final static PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
@@ -53,5 +58,19 @@ public class TestContent {
             .theme(theme1)
             .contenu("Contenu passionnant n°3")
             .nomUtilisateur(utilisateur2)
+            .build();
+
+    public Commentaire commentaire1=Commentaire.builder()
+            .article(article2)
+            .dateCreation(LocalDateTime.now())
+            .nomUtilisateur(utilisateur2)
+            .contenu("J'adore l'article 2")
+            .build();
+
+    public Commentaire commentaire2=Commentaire.builder()
+            .article(article3)
+            .dateCreation(LocalDateTime.now())
+            .nomUtilisateur(utilisateur2)
+            .contenu("Je déteste l'article 3")
             .build();
 }
