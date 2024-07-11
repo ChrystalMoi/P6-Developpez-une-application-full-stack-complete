@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +169,7 @@ public class ThemeController {
             @RequestHeader(value = "Authorization", required = false) String jwt,
 
             @Parameter(description = "Détails de l'article à créer", required = true)
-            @RequestBody ArticleDto articleDto
+            @Valid @RequestBody ArticleDto articleDto
     ) throws EntiteNonTrouveeException {
         // Extraction du nom d'utilisateur à partir du token JWT
         String nomUtilisateur = jwtService.extractNomUtilisateur(jwt.substring(7));
