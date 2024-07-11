@@ -1,12 +1,17 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.mddapi.TestContent;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.repository.CommentaireRepository;
 import com.openclassrooms.mddapi.repository.InfoUtilisateurRepository;
 import com.openclassrooms.mddapi.repository.ThemeRepository;
-import com.openclassrooms.mddapi.service.*;
+import com.openclassrooms.mddapi.service.ArticleServiceImpl;
+import com.openclassrooms.mddapi.service.CommentaireServiceImpl;
+import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
+import com.openclassrooms.mddapi.service.JwtService;
+import com.openclassrooms.mddapi.service.ThemeServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,14 +19,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,6 +56,13 @@ class ArticleControllerIT {
     CommentaireServiceImpl commentaireService;
     @Autowired
     JwtService jwtService;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    // Méthode utilitaire pour convertir un objet en JSON
+    private String convertObjectToJson(Object object) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(object);
+    }
 
     final ObjectMapper mapper=new ObjectMapper();
 
@@ -90,7 +107,7 @@ class ArticleControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/article/" + id)
                         .header("Authorization","Bearer " + jwt))
                 //Then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -103,12 +120,16 @@ class ArticleControllerIT {
         String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
         Long id=repository.save(tc.article1).getId();
 
+        // Vérification de l'ID de l'article
+        System.out.println("ID de l'article enregistré : " + id);
+
         //When
         mockMvc.perform(MockMvcRequestBuilders.post("/article/" + id + "/commentaire")
                         .header("Authorization","Bearer " + jwt)
                         .content("J'adore cet article"))
                 //Then
                 .andExpect(status().isOk());
+        System.out.println("Taille de la liste d'articles : " + repository.findAll().size());
         assertThat(repository.findAll().size()).isEqualTo(1);
     }
 

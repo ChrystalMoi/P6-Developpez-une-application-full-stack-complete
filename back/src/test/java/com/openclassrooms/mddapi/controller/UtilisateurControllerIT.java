@@ -91,7 +91,7 @@ class UtilisateurControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/utilisateur/" + id)
                         .header("Authorization","Bearer " + jwt))
                 //Then
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
     @Test

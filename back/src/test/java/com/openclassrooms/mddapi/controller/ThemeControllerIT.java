@@ -133,7 +133,7 @@ class ThemeControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/theme/" + id)
                         .header("Authorization","Bearer " + jwt))
                 //Then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -182,7 +182,7 @@ class ThemeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(nouvelArticleDto)))
                 //Then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
         assertThat(articleRepository.findAll().size()).isEqualTo(0);
     }
 

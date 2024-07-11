@@ -17,9 +17,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -115,24 +117,28 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody AuthentificationRequest requeteAuthentification) {
-        // Authentification de l'utilisateur en utilisant le gestionnaire d'authentification
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requeteAuthentification.getEmail(), requeteAuthentification.getMotDePasse()));
+        try {
+            // Authentification de l'utilisateur en utilisant le gestionnaire d'authentification
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(requeteAuthentification.getEmail(), requeteAuthentification.getMotDePasse()));
 
-        // Vérification que l'authentification est réussie
-        if (authentication.isAuthenticated()) {
-            // Génération d'un token JWT pour l'utilisateur authentifié
-            String token = jwtService.generateToken(requeteAuthentification.getEmail());
+            // Vérification que l'authentification est réussie
+            if (authentication.isAuthenticated()) {
+                // Génération d'un token JWT pour l'utilisateur authentifié
+                String token = jwtService.generateToken(requeteAuthentification.getEmail());
 
-            // Préparation de la réponse (avec le token JWT)
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+                // Préparation de la réponse (avec le token JWT)
+                Map<String, String> response = new HashMap<>();
+                response.put("token", token);
 
-            // Retourne une réponse HTTP 200 (OK) avec le token JWT dans le corps de la réponse
-            return ResponseEntity.ok(response);
-        } else {
-            // Si l'authentification échoue, lancement d'une exception indiquant des identifiants invalides
-            throw new UsernameNotFoundException("Identifiants invalides");
+                // Retourne une réponse HTTP 200 (OK) avec le token JWT dans le corps de la réponse
+                return ResponseEntity.ok(response);
+            } else {
+                // Si l'authentification échoue, lancement d'une exception indiquant des identifiants invalides
+                throw new UsernameNotFoundException("Identifiants invalides");
+            }
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 
