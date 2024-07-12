@@ -11,6 +11,10 @@ import { MeComponent } from './component/me/me.component';
 import { NotFoundComponent } from './component/not-found/not-found.component';
 import { ConnexionComponent } from './features/auth/connexion/connexion.component';
 import { InscriptionComponent } from './features/auth/inscription/inscription.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,10 @@ import { InscriptionComponent } from './features/auth/inscription/inscription.co
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
   ],
 
   providers: [],

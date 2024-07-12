@@ -1,1 +1,34 @@
-<router-outlet></router-outlet>
+<div class="app">
+
+    <!-- Navbar pour les utilisateurs connectés -->
+    <div *ngIf="showNavbar">
+      <mat-toolbar>
+        <span><img src="/assets/logo_p6.png" alt="Logo-MDD" class="logo" /></span>
+        <div class="navbar-links">
+          <a mat-button routerLink="/" class="lien">Xxxxx</a>
+          <a mat-button routerLink="/" class="lien">Xxxx</a>
+        </div>
+      </mat-toolbar>
+
+      <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #sidenav position="end" mode="side">
+          <mat-nav-list>
+            <a mat-list-item routerLink="/" (click)="sidenav.toggle()">Xxxxa</a>
+            <a mat-list-item routerLink="/" (click)="sidenav.toggle()">Xxxxa</a>
+          </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="sidenav-content">
+          <router-outlet></router-outlet>
+        </mat-sidenav-content>
+        <hr />
+      </mat-sidenav-container>
+    </div>
+
+    <!-- Section pour les utilisateurs non connectés -->
+    <ng-template #logging>
+      <router-outlet></router-outlet>
+    </ng-template>
+
+
+</div>
