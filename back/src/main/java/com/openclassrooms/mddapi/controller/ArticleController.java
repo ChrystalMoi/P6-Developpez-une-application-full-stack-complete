@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.dto.CommentaireDto;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.entity.Commentaire;
+import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
 import com.openclassrooms.mddapi.mapper.ArticleMapper;
 import com.openclassrooms.mddapi.mapper.CommentaireMapper;
@@ -11,8 +12,11 @@ import com.openclassrooms.mddapi.service.ArticleService;
 import com.openclassrooms.mddapi.service.ArticleServiceImpl;
 import com.openclassrooms.mddapi.service.CommentaireService;
 import com.openclassrooms.mddapi.service.CommentaireServiceImpl;
+import com.openclassrooms.mddapi.service.InfoUtilisateurService;
 import com.openclassrooms.mddapi.service.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +44,9 @@ public class ArticleController {
 
     @Autowired
     private final CommentaireService commentaireService= new CommentaireServiceImpl();
+
+    @Autowired
+    private InfoUtilisateurService infoUtilisateurService;
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -84,10 +91,10 @@ public class ArticleController {
      * Ajoute un commentaire à un article spécifié par son identifiant
      *
      * @param id l'identifiant de l'article
-     * @param content le contenu du commentaire à ajouter (maximum 500 caractères)
+     * @param requestBody une map contenant le contenu du commentaire
      * @param jwt le jeton d'autorisation contenant les informations de l'utilisateur
      * @return une map indiquant le succès de l'opération
-     * @throws EntiteNonTrouveeException si l'article correspondant à l'identifiant n'est pas trouvé
+     * @throws EntiteNonTrouveeException si l'utilisateur correspondant au nom d'utilisateur dans le JWT n'est pas trouvé
      */
     @Operation(
             summary = "Ajoute un commentaire à l'article",
@@ -95,24 +102,30 @@ public class ArticleController {
             tags = { "Commentaire" }
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Commentaire ajouté"),
+            @ApiResponse(responseCode = "200", description = "Commentaire ajouté avec succès"),
             @ApiResponse(responseCode = "400", description = "Article ou commentaire invalide"),
-            @ApiResponse(responseCode = "403", description = "Accès non autorisé")
+            @ApiResponse(responseCode = "403", description = "Accès non autorisé"),
+            @ApiResponse(responseCode = "404", description = "Utilisateur non trouvé")
     })
     @PostMapping("/{id}/commentaire")
     @Secured("ROLE_USER")
-    public Map<String, String> ajouterCommentaire( @PathVariable("id") long id, @RequestBody @NotBlank @Size(max = 500) String content, @RequestHeader(value = "Authorization", required = false) String jwt) throws EntiteNonTrouveeException {
+    public Map<String, String> ajouterCommentaire( @PathVariable("id") long id,
+                                                   @RequestBody Map<String, String> requestBody,
+                                                   @RequestHeader(value = "Authorization", required = false) String jwt) throws EntiteNonTrouveeException {
         // Extraire le nom d'utilisateur du jeton JWT
-        // 7 : Supprime le préfixe "Bearer " (7 caractères) du jeton JWT pour obtenir le jeton pur
         String nomUtilisateur = jwtService.extractNomUtilisateur(jwt.substring(7));
+        InfoUtilisateur utilisateur = infoUtilisateurService.getUtilisateurParNomUtilisateur(nomUtilisateur);
+
+        if (utilisateur == null) {
+            throw new EntiteNonTrouveeException(InfoUtilisateur.class, "nom", nomUtilisateur);
+        }
 
         // Créer un objet CommentaireDto avec le contenu et l'id article
         CommentaireDto commentaireDto = new CommentaireDto();
-        System.out.println("Avant : " + commentaireDto);
         commentaireDto.setArticle_id(id);
-        commentaireDto.setContenu(content);
-        commentaireDto.setUtilisateur_nom(nomUtilisateur);
-        System.out.println("Après : " + commentaireDto);
+        commentaireDto.setContenu(requestBody.get("contenu"));
+        commentaireDto.setUtilisateur_id(utilisateur.getId());
+        commentaireDto.setUtilisateur_nom(utilisateur.getNom());
 
         // Transformer le DTO vers une entité de commentaire via le mapper
         Commentaire commentaire = commentaireMapper.mapToEntite(commentaireDto);
