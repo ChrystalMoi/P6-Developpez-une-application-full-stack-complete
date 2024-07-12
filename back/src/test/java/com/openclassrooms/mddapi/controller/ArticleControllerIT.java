@@ -23,6 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -119,6 +122,8 @@ class ArticleControllerIT {
         infoUtilisateurRepository.save(tc.utilisateur1);
         String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
         Long id=repository.save(tc.article1).getId();
+        Map<String,String> content=new HashMap<>();
+        content.put("contenu","J'adore cet article");
 
         // Vérification de l'ID de l'article
         System.out.println("ID de l'article enregistré : " + id);
@@ -126,7 +131,8 @@ class ArticleControllerIT {
         //When
         mockMvc.perform(MockMvcRequestBuilders.post("/article/" + id + "/commentaire")
                         .header("Authorization","Bearer " + jwt)
-                        .content("J'adore cet article"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(content)))
                 //Then
                 .andExpect(status().isOk());
         System.out.println("Taille de la liste d'articles : " + repository.findAll().size());
@@ -142,13 +148,16 @@ class ArticleControllerIT {
         infoUtilisateurRepository.save(tc.utilisateur1);
         String jwt= jwtService.generateToken(tc.utilisateur1.getEmail());
         Long id=repository.save(tc.article1).getId()+ 123456;
+        Map<String,String> content=new HashMap<>();
+        content.put("contenu","J'adore cet article");
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.post("/article/" + id + "/commentaire")
                         .header("Authorization","Bearer " + jwt)
-                        .content("J'adore cet article"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(content)))
                 //Then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
