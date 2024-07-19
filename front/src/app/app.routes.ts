@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './features/auth/home/home.component';
+import { HomeComponent } from './features/auth/components/home/home.component';
 import { MeComponent } from './component/me/me.component';
-import { ConnexionComponent } from './features/auth/connexion/connexion.component';
-import { InscriptionComponent } from './features/auth/inscription/inscription.component';
+import { ConnexionComponent } from './features/auth/components/connexion/connexion.component';
+import { InscriptionComponent } from './features/auth/components/inscription/inscription.component';
 import { NotFoundComponent } from './component/not-found/not-found.component';
 
 export const routes: Routes = [
