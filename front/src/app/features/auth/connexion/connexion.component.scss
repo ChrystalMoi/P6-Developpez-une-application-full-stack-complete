@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 #inscription-container {
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -34,14 +34,14 @@
         font-family: inherit;
 
         &:focus {
-          border: 2px solid #7550EC;
+          border: 2px solid #7550ec;
           outline: none;
         }
       }
     }
 
     .btn-connexion {
-      background-color: #7550EC;
+      background-color: #7550ec;
       color: #fff;
       border: none;
       padding: 12px 30px;
@@ -67,6 +67,7 @@
   cursor: pointer;
   transition: box-shadow 0.2s ease;
   z-index: 1000;
+  margin-top: 55px;
 
   &:hover {
     filter: drop-shadow(0 0 10px rgba(117, 80, 236, 0.8));
@@ -79,11 +80,11 @@
   }
 
   #logo {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      margin: 0 auto 0;
-    }
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 0;
+  }
 
   h1 {
     font-size: 20px;

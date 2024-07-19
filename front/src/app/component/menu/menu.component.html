@@ -1,0 +1,23 @@
+<div class="app">
+  <mat-toolbar>
+    <span><img src="assets/logo_p6.png" alt="Logo-MDD" class="logo" /></span>
+    <div class="navbar-links">
+      <a mat-button routerLink="/" class="lien">Xxxxxb</a>
+      <a mat-button routerLink="/" class="lien">Xxxxxb</a>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav position="end" mode="side">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/" (click)="sidenav.toggle()">Xxxxa</a>
+        <a mat-list-item routerLink="/" (click)="sidenav.toggle()">Xxxxa</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+    <hr />
+  </mat-sidenav-container>
+</div>
