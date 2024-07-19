@@ -10,7 +10,7 @@ import { User } from '../../../interfaces/user.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  private pathService = 'auth';
+  private pathService = 'api/auth';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -33,5 +33,4 @@ export class AuthService {
   public me(): Observable<User> {
     return this.httpClient.get<User>(`${this.pathService}/me`);
   }
-
 }
