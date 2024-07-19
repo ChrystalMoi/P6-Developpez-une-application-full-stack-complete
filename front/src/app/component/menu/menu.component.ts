@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
   ],
 })
 export class MenuComponent implements OnInit {
+  @Input() showLinks = true;
   constructor() {}
 
   ngOnInit(): void {}
