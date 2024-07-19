@@ -84,7 +84,7 @@
     display: block;
     max-width: 100%;
     height: auto;
-    margin: 0 auto 0;
+    margin: 60px auto 0;
   }
 
   h1 {
@@ -102,10 +102,22 @@
       }
     }
   }
+
+  #fleche-retour {
+    margin-top: 20px;
+  }
+
+  app-menu {
+    display: none; // Masquer le menu sur mobile
+  }
 }
 
 @media screen and (min-width: 769px) {
   #logo {
     display: none;
+  }
+
+  app-menu {
+    display: block; // Afficher le menu sur grand écran
   }
 }
