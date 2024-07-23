@@ -56,6 +56,20 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     /* ================================
+        auth/welcome (GET)
+    ================================*/
+
+    /**
+     * Permet de tester si le serveur est en ligne
+     * @return un texte de bienvenue
+     */
+    @Operation(hidden=true)
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome this endpoint is not secure";
+    }
+
+    /* ================================
         auth/register (POST)
     ================================*/
     /**
