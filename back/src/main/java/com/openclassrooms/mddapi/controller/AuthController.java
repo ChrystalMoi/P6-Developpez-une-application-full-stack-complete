@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.dto.UtilisateurDto;
 import com.openclassrooms.mddapi.entity.InfoUtilisateur;
 import com.openclassrooms.mddapi.exception.EmailDejaUtiliseeException;
 import com.openclassrooms.mddapi.exception.EntiteNonTrouveeException;
+import com.openclassrooms.mddapi.exception.ErreurGeneriqueException;
 import com.openclassrooms.mddapi.mapper.UtilisateurMapper;
 import com.openclassrooms.mddapi.payload.AuthentificationRequest;
 import com.openclassrooms.mddapi.payload.CreerUtilisateurRequest;
@@ -11,6 +12,7 @@ import com.openclassrooms.mddapi.payload.ModificationUtilisateurRequest;
 import com.openclassrooms.mddapi.service.InfoUtilisateurService;
 import com.openclassrooms.mddapi.service.InfoUtilisateurServiceImpl;
 import com.openclassrooms.mddapi.service.JwtService;
+import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -172,13 +174,16 @@ public class AuthController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Profil utilisateur récupéré avec succès"),
+            @ApiResponse(responseCode = "400", description = "JWT absent de la requête"),
             @ApiResponse(responseCode = "401", description = "Accès non autorisé"),
             @ApiResponse(responseCode = "403", description = "Accès refusé")
     })
     @GetMapping("/me")
     @Secured("ROLE_USER")
-    public UtilisateurDto profilUtilisateurConnecter(@RequestHeader(value="Authorization",required=false) String jwt) {
-        return utilisateurMapper.mapToDto(infoUtilisateurService.getUtilisateurParNomUtilisateur(jwtService.extractNomUtilisateur(jwt.substring(7))));
+    public UtilisateurDto profilUtilisateurConnecter(@RequestHeader(value="Authorization",required=false) String jwt) throws ErreurGeneriqueException {
+        if (jwt==null) throw new ErreurGeneriqueException("Le JWT est absent");
+        String username = jwtService.extractNomUtilisateur(jwt.substring(7));
+        return utilisateurMapper.mapToDto(infoUtilisateurService.getUtilisateurParNomUtilisateur(username));
     }
 
     /* ================================

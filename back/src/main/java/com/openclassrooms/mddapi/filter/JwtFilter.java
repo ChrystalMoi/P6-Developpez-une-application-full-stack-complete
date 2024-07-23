@@ -46,22 +46,18 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
-
-        // Exclure certaines URLs du filtre JWT
-        if (uri.equals("/auth/register") || uri.equals("/auth/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String token = null;
+        String username = null;
 
         // Récupère l'en-tête Authorization qui contient le token JWT
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             // Extrait le token JWT en enlevant "Bearer "
-            String token = authHeader.substring(7);
+            token = authHeader.substring(7);
 
             // Extrait le nom d'utilisateur à partir du token JWT
-            String username = jwtService.extractNomUtilisateur(token);
+            username = jwtService.extractNomUtilisateur(token);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // Charge les détails de l'utilisateur à partir du service InfoUtilisateurService
@@ -77,10 +73,6 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        } else {
-            // Si le token n'est pas présent, retourner une erreur 403
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token JWT manquant ou invalide");
-            return;
         }
 
         // Passe la requête au filtre suivant dans la chaîne

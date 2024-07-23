@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
@@ -31,5 +33,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MotDePasseInvalideException.class)
     public ResponseEntity<Object> handleMotDePasseInvalideException(MotDePasseInvalideException ex, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mot de passe invalide");
+    }
+
+    @ExceptionHandler(ErreurGeneriqueException.class)
+    protected ResponseEntity<Object> handleGeneric(ErreurGeneriqueException ex) {
+        ApiError apiError = new ApiError(BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
     }
 }
