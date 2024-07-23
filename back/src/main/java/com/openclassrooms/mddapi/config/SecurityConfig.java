@@ -102,16 +102,12 @@ public class SecurityConfig {
             // Autorise l'accès sans authentification aux endpoints spécifiés
             auth.requestMatchers(
                     // Inscription & Connexion
-                    new AntPathRequestMatcher("/auth/welcome"),
-                    new AntPathRequestMatcher("/auth/register"),
-                    new AntPathRequestMatcher("/auth/login"),
+                    "/auth/welcome", "/auth/register", "/auth/login",
 
                     // Liens Swagger (Documentations)
-                    new AntPathRequestMatcher("/v3/api-docs/**"),
-                    new AntPathRequestMatcher("/swagger-ui/**"),
-                    new AntPathRequestMatcher("/swagger-ui.html")
+                    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
             ).permitAll()
-            .anyRequest().permitAll();
+            .anyRequest().authenticated();
         });
 
         // Construit et retourne la chaîne de filtres de sécurité

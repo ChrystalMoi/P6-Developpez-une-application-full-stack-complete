@@ -196,7 +196,7 @@ class AuthControllerIT {
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/me" ))
                 //Then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isForbidden());
     }
 
     @Test

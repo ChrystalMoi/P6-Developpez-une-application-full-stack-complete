@@ -72,6 +72,21 @@ public class AuthController {
     }
 
     /* ================================
+        auth/secured (GET)
+    ================================*/
+
+    /**
+     * Permet de tester si la sécurité bloque bien les utilisateurs non authentifiés
+     * @return un texte de bienvenue
+     */
+    @Operation(hidden=true)
+    @GetMapping("/secured")
+    @Secured("ROLE_USER")
+    public String secured() {
+        return "Welcome this endpoint is secure";
+    }
+
+    /* ================================
         auth/register (POST)
     ================================*/
     /**
@@ -180,8 +195,7 @@ public class AuthController {
     })
     @GetMapping("/me")
     @Secured("ROLE_USER")
-    public UtilisateurDto profilUtilisateurConnecter(@RequestHeader(value="Authorization",required=false) String jwt) throws ErreurGeneriqueException {
-        if (jwt==null) throw new ErreurGeneriqueException("Le JWT est absent");
+    public UtilisateurDto profilUtilisateurConnecter(@RequestHeader(value="Authorization",required=false) String jwt) {
         String username = jwtService.extractNomUtilisateur(jwt.substring(7));
         return utilisateurMapper.mapToDto(infoUtilisateurService.getUtilisateurParNomUtilisateur(username));
     }
