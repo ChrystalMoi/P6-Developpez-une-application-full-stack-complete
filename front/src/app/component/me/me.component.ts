@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-me',
   templateUrl: './me.component.html',
   styleUrls: ['./me.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent],
 })
 export class MeComponent implements OnInit {
   moreInfoVisible: boolean = false;
+  public onError = false;
 
   constructor() {}
 

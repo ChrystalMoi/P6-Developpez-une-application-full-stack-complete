@@ -1,20 +1,41 @@
-<div class="center">
-  <h1>Bienvenue sur ma page personnelle</h1>
-  <p>Ceci est la page "Me" de notre application.</p>
-  <img src="/assets/logo_p6.png" alt="logo" />
+<app-menu />
 
-  <button mat-raised-button color="primary" (click)="showMore()">
-    En savoir plus
-  </button>
+<div id="me-container">
+  <h1>Profil utilisateur</h1>
 
-  <!-- Ajout d'une section supplémentaire pour afficher plus d'informations -->
-  <div *ngIf="moreInfoVisible">
-    <h2>Informations supplémentaires</h2>
-    <p>Voici quelques détails supplémentaires sur cette page.</p>
-    <ul>
-      <li>Detail 1</li>
-      <li>Detail 2</li>
-      <li>Detail 3</li>
-    </ul>
-  </div>
+  <form>
+    <div class="form-group">
+      <input
+        matInput
+        type="text"
+        id="nom"
+        formControlName="nom"
+        placeholder="Entrez votre nouveau nom utilisateur"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        matInput
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Entrez votre nouvel email"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-sauvegarder">Sauvegarder</button>
+    <br />
+    <button type="submit" class="btn-desinscrire">Se déconnecter</button>
+
+    <hr />
+
+    <h2>Abonnements</h2>
+
+    <div *ngIf="onError" class="error-message">
+      Une erreur est survenue lors de l'inscription.
+    </div>
+  </form>
 </div>
