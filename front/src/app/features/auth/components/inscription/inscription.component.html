@@ -1,0 +1,55 @@
+<app-menu [showLinks]="false" />
+
+<a mat-button routerLink="/">
+  <img src="assets/fleche-gauche.png" alt="Flèche Retour" id="fleche-retour" />
+</a>
+
+<div id="inscription-container">
+  <img src="assets/logo_p6.png" alt="logo-mdd" id="logo" />
+
+  <h1>Inscription</h1>
+
+  <form [formGroup]="inscriptionForm" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label for="nom">Nom Utilisateur</label>
+      <input
+        matInput
+        type="text"
+        id="nom"
+        formControlName="nom"
+        placeholder="Entrez votre nom d'utilisateur"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        matInput
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Entrez votre email"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="motDePasse">Mot de passe</label>
+      <input
+        matInput
+        type="password"
+        id="motDePasse"
+        formControlName="motDePasse"
+        placeholder="Entrez votre mot de passe"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-inscrire">S'inscrire</button>
+
+    <div *ngIf="onError" class="error-message">
+      Une erreur est survenue lors de l'inscription.
+    </div>
+  </form>
+</div>

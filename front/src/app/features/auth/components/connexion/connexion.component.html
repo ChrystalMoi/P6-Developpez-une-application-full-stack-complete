@@ -1,0 +1,37 @@
+<app-menu [showLinks]="false" />
+
+<a routerLink="">
+  <img src="/assets/fleche-gauche.png" alt="Flèche Retour" id="fleche-retour" />
+</a>
+
+<div id="inscription-container">
+  <img src="/assets/logo_p6.png" alt="logo-mdd" id="logo" />
+
+  <h1>Connexion</h1>
+
+  <form>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Entrez votre email"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Entrez votre mot de passe"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-connexion">Se connecter</button>
+  </form>
+</div>

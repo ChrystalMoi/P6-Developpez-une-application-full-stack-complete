@@ -1,0 +1,21 @@
+<div class="app">
+  <mat-toolbar>
+    <span><img src="assets/logo_p6.png" alt="Logo-MDD" class="logo" /></span>
+    <div *ngIf="showLinks" class="navbar-links">
+      <a mat-button routerLink="/" class="lien">Articles</a>
+      <a mat-button routerLink="/" class="lien">Thèmes</a>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav position="end" mode="side">
+      <mat-nav-list>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+    <hr />
+  </mat-sidenav-container>
+</div>

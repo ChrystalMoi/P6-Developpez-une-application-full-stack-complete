@@ -12,11 +12,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -102,16 +102,12 @@ public class SecurityConfig {
             // Autorise l'accès sans authentification aux endpoints spécifiés
             auth.requestMatchers(
                     // Inscription & Connexion
-                    new AntPathRequestMatcher("/auth/register"),
-                    new AntPathRequestMatcher("/auth/login"),
+                    "/auth/welcome", "/auth/register", "/auth/login",
 
                     // Liens Swagger (Documentations)
-                    new AntPathRequestMatcher("/v3/api-docs/**"),
-                    new AntPathRequestMatcher("/swagger-ui/**"),
-                    new AntPathRequestMatcher("/swagger-ui.html")
-            ).permitAll();
-            // Exige une authentification pour toutes les autres requêtes
-            auth.anyRequest().authenticated();
+                    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
+            ).permitAll()
+            .anyRequest().authenticated();
         });
 
         // Construit et retourne la chaîne de filtres de sécurité
