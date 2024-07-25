@@ -9,29 +9,35 @@
 
   <h1>Connexion</h1>
 
-  <form>
+  <form [formGroup]="connexionForm" (ngSubmit)="submit()">
     <div class="form-group">
       <label for="email">Email</label>
       <input
         type="email"
         id="email"
         name="email"
+        formControlName="email"
         placeholder="Entrez votre email"
         required
       />
     </div>
 
     <div class="form-group">
-      <label for="password">Mot de passe</label>
+      <label for="motDePasse">Mot de passe</label>
       <input
         type="password"
-        id="password"
-        name="password"
+        id="motDePasse"
+        name="motDePasse"
+        formControlName="motDePasse"
         placeholder="Entrez votre mot de passe"
         required
       />
     </div>
 
     <button type="submit" class="btn-connexion">Se connecter</button>
+
+    <div *ngIf="onError" class="error-message">
+      Une erreur est survenue lors de l'inscription.
+    </div>
   </form>
 </div>

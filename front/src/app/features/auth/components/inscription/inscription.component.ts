@@ -12,8 +12,6 @@ import {
 } from '@angular/forms';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
 import { RegisterRequest } from '../../interfaces/registerRequest.interface';
-import { SessionService } from '../../../../services/session.service';
-import { User } from '../../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-inscription',
@@ -30,7 +28,6 @@ export class InscriptionComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private sessionService: SessionService,
     private router: Router,
     private ngZone: NgZone
   ) {
@@ -62,25 +59,33 @@ export class InscriptionComponent {
       return; // Arrête l'exécution si le formulaire = invalide
     }
 
+    // Récupère les valeurs du formulaire `inscriptionForm`
     const formValues = this.inscriptionForm.value;
 
+    // Crée un objet `registerRequest` avec les données nécessaires pour l'inscription
     const registerRequest: RegisterRequest = {
       nom: formValues.nom,
       email: formValues.email,
       motDePasse: formValues.motDePasse,
     };
 
+    // Appelle le service d'authentification pour inscrire l'utilisateur
     this.authService.register(registerRequest).subscribe({
+      // Est exécuté lorsque l'inscription ok
       next: (response: AuthSuccess) => {
+        // Stocke le token d'auth renvoyer par le serveur dans le localStorage
         localStorage.setItem('token', response.token);
-        this.authService.me().subscribe((user: User) => {
-          this.sessionService.logIn(user);
-          this.ngZone.run(() => {
-            this.router.navigate(['/']);
-          });
+
+        // Assure que la redirection fonctionne après l'inscription
+        this.ngZone.run(() => {
+          // Redirige l'utilisateur vers la page '/me' après inscription
+          this.router.navigate(['/me']);
         });
       },
-      error: () => {
+
+      // C'est exécutée si une erreur se produit lors de l'inscription
+      error: (error) => {
+        console.error("Erreur lors de l'inscription :", error);
         this.onError = true;
       },
     });
