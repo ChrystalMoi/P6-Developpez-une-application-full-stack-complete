@@ -1,0 +1,44 @@
+<app-menu></app-menu>
+
+<div id="formulaire-article-container">
+  <h1>Créer un nouvel article</h1>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <select id="theme" name="theme" [(ngModel)]="article.theme" required>
+        <option value="" disabled selected id="placeholder">
+          Sélectionner un thème
+        </option>
+        @for (theme of themes$ | async; track theme.id) {
+        <option value="{{ theme.id }}">{{ theme.nom }}</option>
+        } @empty {
+        <option><mat-spinner></mat-spinner></option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <input
+        id="titre"
+        placeholder="Titre de l'article"
+        name="titre"
+        [(ngModel)]="article.titre"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <textarea
+        id="contenu"
+        placeholder="Contenu de l'article"
+        name="contenu"
+        [(ngModel)]="article.contenu"
+        rows="5"
+        required
+      >
+      </textarea>
+    </div>
+
+    <button type="submit" class="btn-creation">Créer</button>
+  </form>
+</div>

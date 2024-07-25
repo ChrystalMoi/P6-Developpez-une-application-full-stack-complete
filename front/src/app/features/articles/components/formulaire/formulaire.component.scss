@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+#formulaire-article-container {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  form {
+    .form-group {
+      margin-bottom: 15px;
+
+      input,
+      textarea,
+      select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #000;
+        border-radius: 3px;
+        box-sizing: border-box;
+        font-family: inherit;
+
+        &:focus {
+          border: 2px solid #7550ec;
+          outline: none;
+        }
+      }
+    }
+
+    .btn-creation {
+      background-color: #7550ec;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-family: inherit;
+      margin-top: 5px;
+
+      &:hover {
+        background-color: #5e3aba;
+      }
+    }
+  }
+}
