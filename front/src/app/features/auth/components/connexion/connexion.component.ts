@@ -11,6 +11,8 @@ import { LoginRequest } from '../../interfaces/loginRequest.interface';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { SessionService } from '../../../../services/session.service';
+import { User } from '../../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-connexion',
@@ -28,7 +30,8 @@ export class ConnexionComponent {
     private router: Router,
     private ngZone: NgZone,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private sessionService: SessionService
   ) {
     this.connexionForm = this.formBuilder.group({
       email: [
@@ -64,12 +67,30 @@ export class ConnexionComponent {
       // Est exécuté lorsque la connexion est ok
       next: (response: AuthSuccess) => {
         // Stocke le token d'auth renvoyer par le serveur dans le localStorage
+        console.log('AuthSuccess response:', response);
         localStorage.setItem('token', response.token);
+        console.log(
+          'Token stored in localStorage:',
+          localStorage.getItem('token')
+        );
 
-        // Assure que la redirection fonctionne après la connexion
-        this.ngZone.run(() => {
-          // Redirige l'utilisateur vers la page '/me' après connexion
-          this.router.navigate(['/me']);
+        // Récupération donnée user de /me
+        this.authService.me().subscribe({
+          next: (responseUser: User) => {
+            this.sessionService.logIn(responseUser);
+
+            // Assure que la redirection fonctionne après la connexion
+            this.ngZone.run(() => {
+              // Redirige l'utilisateur vers la page '/me' après connexion
+              this.router.navigate(['/me']);
+            });
+          },
+          error(err) {
+            console.error(
+              'Une erreur est survenue lors de la récupréation des données utilisateur : ',
+              err
+            );
+          },
         });
       },
 
