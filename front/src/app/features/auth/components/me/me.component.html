@@ -27,15 +27,17 @@
     </div>
 
     <button type="submit" class="btn-sauvegarder">Sauvegarder</button>
-    <br />
-    <button type="submit" class="btn-desinscrire">Se déconnecter</button>
-
-    <hr />
-
-    <h2>Abonnements</h2>
-
-    <div *ngIf="onError" class="error-message">
-      Une erreur est survenue lors de l'inscription.
-    </div>
   </form>
+  <br />
+  <button class="btn-desinscrire" (click)="deconnexion()">
+    Se déconnecter
+  </button>
+
+  <hr />
+
+  <h2>Abonnements</h2>
+
+  <div *ngIf="onError" class="error-message">
+    Une erreur est survenue lors de l'inscription.
+  </div>
 </div>
