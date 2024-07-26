@@ -12,6 +12,8 @@ import {
 } from '@angular/forms';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
 import { RegisterRequest } from '../../interfaces/registerRequest.interface';
+import { User } from '../../../../interfaces/user.interface';
+import { SessionService } from '../../../../services/session.service';
 
 @Component({
   selector: 'app-inscription',
@@ -29,7 +31,8 @@ export class InscriptionComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private sessionService: SessionService
   ) {
     this.inscriptionForm = this.formBuilder.group({
       email: [
@@ -74,12 +77,30 @@ export class InscriptionComponent {
       // Est exécuté lorsque l'inscription ok
       next: (response: AuthSuccess) => {
         // Stocke le token d'auth renvoyer par le serveur dans le localStorage
+        console.log('AuthSuccess response :', response);
         localStorage.setItem('token', response.token);
+        console.log(
+          'Token stored in localStorage:',
+          localStorage.getItem('token')
+        );
 
-        // Assure que la redirection fonctionne après l'inscription
-        this.ngZone.run(() => {
-          // Redirige l'utilisateur vers la page '/me' après inscription
-          this.router.navigate(['/me']);
+        // Récupération donnée user de /me
+        this.authService.me().subscribe({
+          next: (responseUser: User) => {
+            this.sessionService.logIn(responseUser);
+
+            // Assure que la redirection fonctionne après l'inscription
+            this.ngZone.run(() => {
+              // Redirige l'utilisateur vers la page '/me' après inscription
+              this.router.navigate(['/me']);
+            });
+          },
+          error(err) {
+            console.error(
+              'Une erreur est survenue lors de la récupréation des données utilisateur : ',
+              err
+            );
+          },
         });
       },
 
