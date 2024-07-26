@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MenuComponent } from '../../../../component/menu/menu.component';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArticlesService } from '../../services/articles.service';
 import { Article } from '..//../interfaces/article.interface';
 import { ThemeService } from '../../services/themes.service';
@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    RouterLink,
   ],
   templateUrl: './formulaire.component.html',
   styleUrl: './formulaire.component.scss',
@@ -48,24 +49,14 @@ export class FormulaireComponent implements OnInit {
 
   ngOnInit(): void {
     // Récupère l'id du thème depuis les paramètres de la route
-    this.route.paramMap.subscribe((params) => {
+    /*this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.themeId = +id; // Convertit le paramètre en nombre si id n'est pas null
       } else {
         console.error('Paramètre "id" manquant dans l\'URL.');
-        this.router.navigate(['/article']); // Redirection
+        this.router.navigate(['/articles']); // Redirection
       }
-    });
-
-    // Récupération des noms de tous les thèmes pour pouvoir les affichers dans le select du formulaire
-    /*this.themeService.tousLesThemes().subscribe({
-      next(themeTableau) {
-        this.themes = themeTableau;
-      },
-      error(err) {
-        console.error('Erreur1234', err);
-      },
     });*/
   }
 
@@ -76,7 +67,7 @@ export class FormulaireComponent implements OnInit {
     this.articlesService
       .creationArticle(idThemeEnString, this.article) // Passe l'id du thème en tant que chaîne
       .subscribe(() => {
-        this.router.navigate(['/me']); // Redirection après création
+        this.router.navigate(['/articles']); // Redirection après création
       });
   }
 }
