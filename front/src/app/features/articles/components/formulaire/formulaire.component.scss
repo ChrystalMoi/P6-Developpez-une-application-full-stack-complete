@@ -53,3 +53,19 @@
     }
   }
 }
+
+#fleche-retour {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+  z-index: 1000;
+  margin-top: 55px;
+
+  &:hover {
+    filter: drop-shadow(0 0 10px rgba(117, 80, 236, 0.8));
+  }
+}
