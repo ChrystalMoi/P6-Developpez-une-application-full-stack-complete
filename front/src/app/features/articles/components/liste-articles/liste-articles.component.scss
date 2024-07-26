@@ -1,0 +1,16 @@
+.btn-creation-article {
+  background-color: #7550ec;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: inherit;
+  margin-top: 5px;
+
+  &:hover {
+    background-color: #5e3aba;
+  }
+}
