@@ -91,7 +91,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         // Configure la gestion de la session pour être sans état (stateless)
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Configure le fournisseur d'authentification et ajoute le filtre JWT
         http.authenticationProvider(authenticationProvider())
