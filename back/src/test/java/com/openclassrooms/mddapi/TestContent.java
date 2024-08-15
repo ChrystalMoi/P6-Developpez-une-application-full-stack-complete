@@ -43,34 +43,34 @@ public class TestContent {
             .titre("Art 1")
             .theme(theme1)
             .contenu("Contenu passionnant n°1")
-            .nomUtilisateur(utilisateur1)
+            .auteur(utilisateur1)
             .build();
 
     public Article article2=Article.builder()
             .titre("Art 2")
             .theme(theme2)
             .contenu("Contenu passionnant n°2")
-            .nomUtilisateur(utilisateur2)
+            .auteur(utilisateur2)
             .build();
 
     public Article article3=Article.builder()
             .titre("Art 3")
             .theme(theme1)
             .contenu("Contenu passionnant n°3")
-            .nomUtilisateur(utilisateur2)
+            .auteur(utilisateur2)
             .build();
 
     public Commentaire commentaire1=Commentaire.builder()
             .article(article2)
             .dateCreation(LocalDateTime.now())
-            .nomUtilisateur(utilisateur2)
+            .auteur(utilisateur2)
             .contenu("J'adore l'article 2")
             .build();
 
     public Commentaire commentaire2=Commentaire.builder()
             .article(article3)
             .dateCreation(LocalDateTime.now())
-            .nomUtilisateur(utilisateur2)
+            .auteur(utilisateur2)
             .contenu("Je déteste l'article 3")
             .build();
 }
