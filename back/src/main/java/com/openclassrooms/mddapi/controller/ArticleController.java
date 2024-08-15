@@ -122,10 +122,10 @@ public class ArticleController {
 
         // Créer un objet CommentaireDto avec le contenu et l'id article
         CommentaireDto commentaireDto = new CommentaireDto();
-        commentaireDto.setArticle_id(id);
+        commentaireDto.setArticleId(id);
         commentaireDto.setContenu(requestBody.get("contenu"));
-        commentaireDto.setUtilisateur_id(utilisateur.getId());
-        commentaireDto.setUtilisateur_nom(utilisateur.getNom());
+        commentaireDto.setAuteurId(utilisateur.getId());
+        commentaireDto.setAuteurNom(utilisateur.getNom());
 
         // Transformer le DTO vers une entité de commentaire via le mapper
         Commentaire commentaire = commentaireMapper.mapToEntite(commentaireDto);
@@ -164,4 +164,23 @@ public class ArticleController {
         List<Commentaire> commentaires = commentaireService.obtenirTousLesCommentairesAvecIdArticle(id);
         return commentaireMapper.mapToDto(commentaires);
     }
+
+    /* ================================
+            article (GET)
+        ================================*/
+    @Operation(
+            summary = "Affiche les articles",
+            description = "Cette méthode permet de récupérer tous les articles",
+            tags = { "Article" }
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Articles bien affiché"),
+            @ApiResponse(responseCode = "403", description = "Accès non autorisé")
+    })
+    @GetMapping("")
+    @Secured("ROLE_USER")
+    public List<ArticleDto> getAllArticles(){
+        return articleService.getAllArticles();
+    }
+
 }
