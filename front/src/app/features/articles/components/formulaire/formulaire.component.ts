@@ -30,10 +30,10 @@ export class FormulaireComponent implements OnInit {
     id: 0,
     titre: '',
     contenu: '',
-    utilisateur_id: 0,
-    nomUtilisateur: '',
-    theme_id: 0,
-    theme: '',
+    auteurId: 0,
+    auteurNom: '',
+    themeId: 0,
+    themeNom: '',
     dateCreation: new Date(),
   };
 
