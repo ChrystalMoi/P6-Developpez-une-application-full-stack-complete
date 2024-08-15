@@ -183,7 +183,7 @@ public class ThemeController {
         Article article = Article.builder()
                 .contenu(articleDto.getContenu())
                 .titre(articleDto.getTitre())
-                .nomUtilisateur(utilisateur)
+                .auteur(utilisateur)
                 .theme(themeService.getThemeParId(id))
                 .build();
         System.out.println("Article construit: " + article);

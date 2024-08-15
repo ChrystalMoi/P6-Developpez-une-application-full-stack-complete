@@ -29,8 +29,8 @@ public abstract class CommentaireMapper implements DtoEntiteMapper<CommentaireDt
      * @return l'entité Commentaire correspondante
      */
     @Mappings({
-            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUtilisateurParId(commentaireDto.getUtilisateur_id()))"),
-            @Mapping(target = "article", expression = "java(articleService.getArticleParId(commentaireDto.getArticle_id()))")
+            @Mapping(target = "auteur", expression = "java(infoUtilisateurService.getUtilisateurParId(commentaireDto.getAuteurId()))"),
+            @Mapping(target = "article", expression = "java(articleService.getArticleParId(commentaireDto.getArticleId()))")
     })
     public abstract Commentaire mapToEntite(CommentaireDto commentaireDto);
 
@@ -41,9 +41,9 @@ public abstract class CommentaireMapper implements DtoEntiteMapper<CommentaireDt
      * @return le DTO CommentaireDto correspondant
      */
     @Mappings({
-            @Mapping(source = "nomUtilisateur.id", target = "utilisateur_id"),
-            @Mapping(source = "nomUtilisateur.nom", target = "utilisateur_nom"),
-            @Mapping(source = "article.id", target = "article_id")
+            @Mapping(source = "auteur.id", target = "auteurId"),
+            @Mapping(source = "auteur.nom", target = "auteurNom"),
+            @Mapping(source = "article.id", target = "articleId")
     })
     public abstract CommentaireDto mapToDto(Commentaire commentaire);
 }

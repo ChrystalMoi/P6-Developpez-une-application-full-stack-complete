@@ -22,11 +22,11 @@ public class CommentaireDto {
     private String contenu;
 
     @NotNull
-    private Long utilisateur_id;
-    private String utilisateur_nom;
+    private Long auteurId;
+    private String auteurNom;
 
     @NotNull
-    private Long article_id;
+    private Long articleId;
 
     private LocalDateTime dateCreation;
 }

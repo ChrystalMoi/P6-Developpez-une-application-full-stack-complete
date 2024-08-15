@@ -33,7 +33,7 @@ public class Commentaire {
 
     @ManyToOne
     @JoinColumn(name="utilisateur_id", referencedColumnName = "id")
-    private InfoUtilisateur nomUtilisateur;
+    private InfoUtilisateur auteur;
 
     @ManyToOne
     @JoinColumn(name="article_id", referencedColumnName = "id")
