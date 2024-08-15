@@ -1,0 +1,29 @@
+.carte-article {
+  background-color: #e1e1e1e1;
+  border-radius: 8px;
+
+  margin-bottom: 0;
+  padding: 16px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  width: 100%;
+
+  h2 {
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 0.9em;
+    color: #555;
+  }
+
+  p {
+    font-size: 1em;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+}
