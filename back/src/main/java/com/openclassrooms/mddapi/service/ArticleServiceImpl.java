@@ -1,7 +1,9 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
+import com.openclassrooms.mddapi.mapper.ArticleMapper;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
     /**
      * Récupère un article par son id
@@ -57,5 +62,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> getTousLesArticlesDansLesThemeIds(final List<Long> ids) {
         return articleRepository.findByThemeIdInOrderByDateCreationDesc(ids);
+    }
+
+    /**
+     * Récupère tous les articles
+     * @return la liste de tous les articles
+     */
+    @Override
+    public List<ArticleDto> getAllArticles() {
+        // Récupérer dans le ArticleRepository la liste des ArticleEntity
+        List<Article> listeArticleEntity = articleRepository.findAll();
+
+        // Traduire les ArticleEntitys en ArticleDTO pour éliminer les informations inutiles
+        List<ArticleDto> listeArticleDto = articleMapper.mapToDto(listeArticleEntity);
+
+        // Retourner la liste au format DTO (format attendu)
+        return listeArticleDto;
     }
 }

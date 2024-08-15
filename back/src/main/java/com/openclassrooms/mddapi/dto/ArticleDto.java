@@ -25,11 +25,11 @@ public class ArticleDto {
     @Size(max = 100)
     private String contenu;
 
-    private Long utilisateur_id;
-    private String utilisateur_nom;
+    private Long auteurId;
+    private String auteurNom;
 
-    private Long theme_id;
-    private String theme_nom;
+    private Long themeId;
+    private String themeNom;
 
     private LocalDateTime dateCreation;
 }

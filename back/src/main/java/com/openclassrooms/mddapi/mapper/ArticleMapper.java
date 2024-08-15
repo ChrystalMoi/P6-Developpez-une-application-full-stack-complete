@@ -29,8 +29,8 @@ public abstract class ArticleMapper implements DtoEntiteMapper<ArticleDto, Artic
      * @return l'entité Article correspondante
      */
     @Mappings({
-            @Mapping(target = "nomUtilisateur", expression = "java(infoUtilisateurService.getUtilisateurParId(articleDto.getUtilisateur_id()))"),
-            @Mapping(target = "theme", expression = "java(themeService.getThemeParId(articleDto.getTheme_id()))"),
+            @Mapping(target = "auteur", expression = "java(infoUtilisateurService.getUtilisateurParId(articleDto.getAuteurId()))"),
+            @Mapping(target = "theme", expression = "java(themeService.getThemeParId(articleDto.getThemeId()))"),
     })
     public abstract Article mapToEntite(ArticleDto articleDto);
 
@@ -41,10 +41,10 @@ public abstract class ArticleMapper implements DtoEntiteMapper<ArticleDto, Artic
      * @return le DTO ArticleDto correspondant
      */
     @Mappings({
-            @Mapping(source = "nomUtilisateur.id", target = "utilisateur_id"),
-            @Mapping(source = "nomUtilisateur.nom", target = "utilisateur_nom"),
-            @Mapping(source = "theme.id", target = "theme_id"),
-            @Mapping(source = "theme.nom", target = "theme_nom")
+            @Mapping(source = "auteur.id", target = "auteurId"),
+            @Mapping(source = "auteur.nom", target = "auteurNom"),
+            @Mapping(source = "theme.id", target = "themeId"),
+            @Mapping(source = "theme.nom", target = "themeNom")
     })
     public abstract ArticleDto mapToDto(Article article);
 }

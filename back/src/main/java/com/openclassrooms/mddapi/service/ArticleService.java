@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.entity.Article;
 import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
 
@@ -37,5 +38,10 @@ public interface ArticleService {
      * @return La liste des articles associés aux thèmes spécifiés
      */
     List<Article> getTousLesArticlesDansLesThemeIds(final List<Long> ids);
+
+    List<ArticleDto> getAllArticles();
+
 }
+
+
 

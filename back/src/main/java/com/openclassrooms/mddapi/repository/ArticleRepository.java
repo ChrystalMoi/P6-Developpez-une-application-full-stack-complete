@@ -20,7 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
      * @param utilisateurId l'ID de l'utilisateur
      * @return une liste d'articles
      */
-    List<Article> findByNomUtilisateurId(Long utilisateurId);
+    List<Article> findByAuteurId(Long utilisateurId);
 
     /**
      * Trouve les articles associés à un thème spécifique et les trie par date de création dé-croissante
