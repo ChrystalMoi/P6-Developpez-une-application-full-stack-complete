@@ -8,9 +8,45 @@
   cursor: pointer;
   transition: background-color 0.3s;
   font-family: inherit;
-  margin-top: 5px;
+  margin-left: 40px;
 
   &:hover {
     background-color: #5e3aba;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.filter-select {
+  background-color: #ffffff;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 13px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-right: 40px;
+}
+
+.articles-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+
+  app-carte-article {
+    max-width: calc(50% - 32px);
+    flex: 1 1 calc(50% - 32px);
+    box-sizing: border-box;
   }
 }
