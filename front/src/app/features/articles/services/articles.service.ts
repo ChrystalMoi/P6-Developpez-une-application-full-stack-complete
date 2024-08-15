@@ -13,10 +13,17 @@ export class ArticlesService {
 
   constructor(private httpClient: HttpClient) {}
 
-  public tousLesArticles(utilisateur_id: number): Observable<Article[]> {
+  public tousLesArticlesDeLutilisateur(
+    auteurId: number
+  ): Observable<Article[]> {
     return this.httpClient.get<Article[]>(
-      `${this.pathService}/utilisateur/${utilisateur_id}/articles`
+      `${this.pathService}/utilisateur/${auteurId}/articles`
     );
+  }
+
+  public tousLesArticles(): Observable<Article[]> {
+    const test = this.httpClient.get<Article[]>(`${this.pathService}/article`);
+    return test;
   }
 
   public detailArticle(id: string): Observable<Article> {
