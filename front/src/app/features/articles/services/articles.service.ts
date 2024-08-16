@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Article } from '../interfaces/article.interface';
 import { ArticleResponse } from '../interfaces/articleResponse.interface';
 import { MessageDto } from '../interfaces/message-dto';
+import { ArticleCreateRequest } from '../interfaces/articleCreateRequest.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,7 @@ export class ArticlesService {
 
   public creationArticle(
     id_theme: string,
-    article: Article
+    article: ArticleCreateRequest
   ): Observable<ArticleResponse> {
     return this.httpClient.post<ArticleResponse>(
       `${this.pathService}/theme/${id_theme}/articles`,
