@@ -4,28 +4,20 @@
     Créer un article
   </button>
 
-  <select class="filter-select">
+  <select class="filter-select" (change)="onFilterChange($event)">
     <option disabled selected>Trier par ...</option>
-    <option value="title-asc">Titre A-Z</option>
-    <option value="title-desc">Titre Z-A</option>
-    <option value="date">Date</option>
+    <option value="titre-asc">Titre A-Z</option>
+    <option value="titre-desc">Titre Z-A</option>
+    <!--<option value="date">Date</option>
+    <option value="theme">Themes</option>-->
   </select>
 </div>
 
-<!-- ---------- TODO ---------- -->
-<!-- 1. Mettre un système de tri (ordre alphabétique, ordre croissant de création et décroissant) -->
-<!-- 2. Créer les cartes articles et les affichers ici dans une grille (2 cartes par lignes)-->
-<!-- -------- --------- ---------->
-
 <div class="articles-container">
-  @for (article of articles$ | async; track article.id) {
+  @for (article of articles(); track article.id) {
   <!--{{ article | json }}-->
   <app-carte-article [article]="article" />
   } @empty {
   <p>Pas d'article</p>
   }
 </div>
-
-<!--boucler sur tous les articles,
-  chaque article -> affichage app carte article (avec en params de ce composant l'article)
--->
