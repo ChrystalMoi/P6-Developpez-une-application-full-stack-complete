@@ -1,10 +1,12 @@
-<div class="carte-article">
-  @if (article) {
-  <h2>{{ article.titre }}</h2>
-  <div class="meta">
-    <span>{{ article.dateCreation | date : "EEEE dd MMMM yyyy" }}</span>
-    <span>{{ article.auteurNom }}</span>
+@if (article) {
+<a [routerLink]="['/detail-article', article.id]" class="lien-carte">
+  <div class="carte-article">
+    <h2>{{ article.titre }}</h2>
+    <div class="meta">
+      <span>{{ article.dateCreation | date : "EEEE dd MMMM yyyy" }}</span>
+      <span>{{ article.auteurNom }}</span>
+    </div>
+    <p class="truncated-text">Contenu : {{ article.contenu }}</p>
   </div>
-  <p class="truncated-text">Contenu : {{ article.contenu }}</p>
-  } @else {Titre}
-</div>
+</a>
+} @else {Titre}
