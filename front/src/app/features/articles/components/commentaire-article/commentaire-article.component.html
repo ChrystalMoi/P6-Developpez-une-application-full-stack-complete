@@ -1,1 +1,10 @@
-<p>commentaire-article works!</p>
+<div class="commentaire-container">
+  @if (commentaire) {
+  <div class="colonne-gauche">
+    <p class="username">{{ commentaire.auteurNom }}</p>
+  </div>
+  <div class="colonne-droite">
+    <p class="commentaire">Commentaire de l'utilisateur.</p>
+  </div>
+  } @else {Pas de commentaire pour le moment}
+</div>

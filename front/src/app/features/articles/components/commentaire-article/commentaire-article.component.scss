@@ -1,0 +1,29 @@
+.commentaire-container {
+  display: flex;
+  margin: 20px 65px;
+}
+
+.colonne-gauche {
+  margin-right: 25px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.colonne-droite {
+  flex: 3;
+  margin-right: 65px;
+}
+
+.commentaire {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.6;
+}
