@@ -1,14 +1,20 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuComponent } from '../../../../component/menu/menu.component';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArticlesService } from '../../services/articles.service';
-import { Article } from '..//../interfaces/article.interface';
 import { ThemeService } from '../../services/themes.service';
 import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ArticleCreateRequest } from '../../interfaces/articleCreateRequest.interface';
 
 @Component({
   selector: 'app-formulaire',
@@ -20,54 +26,72 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    ReactiveFormsModule,
     RouterLink,
   ],
   templateUrl: './formulaire.component.html',
   styleUrl: './formulaire.component.scss',
 })
-export class FormulaireComponent implements OnInit {
-  article: Article = {
-    id: 0,
-    titre: '',
-    contenu: '',
-    auteurId: 0,
-    auteurNom: '',
-    themeId: 0,
-    themeNom: '',
-    dateCreation: new Date(),
-  };
+export class FormulaireComponent {
+  public articleForm: FormGroup;
 
-  themeId: number = 0;
   themes$ = inject(ThemeService).tousLesThemes();
 
   constructor(
     private articlesService: ArticlesService,
     private router: Router,
     private route: ActivatedRoute,
-    public themeService: ThemeService
-  ) {}
-
-  ngOnInit(): void {
-    // Récupère l'id du thème depuis les paramètres de la route
-    /*this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.themeId = +id; // Convertit le paramètre en nombre si id n'est pas null
-      } else {
-        console.error('Paramètre "id" manquant dans l\'URL.');
-        this.router.navigate(['/articles']); // Redirection
-      }
-    });*/
+    public themeService: ThemeService,
+    private formBuilder: FormBuilder
+  ) {
+    this.articleForm = this.formBuilder.group({
+      theme: ['0', [Validators.required]],
+      titre: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      contenu: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+        ],
+      ],
+    });
   }
 
-  onSubmit(): void {
-    // Convertit themeId en string pour passer à creationArticle si nécessaire
-    const idThemeEnString = this.themeId.toString();
+  public onSubmit(): void {
+    if (this.articleForm.invalid) {
+      console.error('Erreur - Formulaire invalide');
+      return; // Arrête l'exécution si le formulaire = invalide
+    }
 
+    if (this.articleForm.get('theme')?.value == 0) {
+      console.error('Le thème ne peut pas être vide');
+      return;
+    }
+
+    // Récupère les valeurs du formulaire `articleForm`
+    const formValues = this.articleForm.value;
+
+    // Création d'un objet `articleRequest`avec les données nécessaires
+    const articleCreateRequest: ArticleCreateRequest = {
+      titre: formValues.titre,
+      contenu: formValues.contenu,
+    };
+
+    // Appel du service article pour enregistrer l'article
     this.articlesService
-      .creationArticle(idThemeEnString, this.article) // Passe l'id du thème en tant que chaîne
-      .subscribe(() => {
-        this.router.navigate(['/articles']); // Redirection après création
+      .creationArticle(formValues.theme, articleCreateRequest)
+      .subscribe({
+        next: () => this.router.navigate(['/articles']),
+        error: (err) =>
+          console.error("Erreur lors de l'ajout d'un article : ", err),
       });
   }
 }

@@ -7,10 +7,11 @@
 <div id="formulaire-article-container">
   <h1>Créer un nouvel article</h1>
 
-  <form (ngSubmit)="onSubmit()">
+  <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+    <!-- Récupération des thèmes de la bdd -->
     <div class="form-group">
-      <select id="theme" name="theme" [(ngModel)]="article.themeId" required>
-        <option value="" disabled selected id="placeholder">
+      <select formControlName="theme" id="theme" name="theme" required>
+        <option value="0" disabled selected id="placeholder">
           Sélectionner un thème
         </option>
         @for (theme of themes$ | async; track theme.id) {
@@ -21,23 +22,26 @@
       </select>
     </div>
 
+    <!-- Titre du nouvelle article -->
     <div class="form-group">
       <input
         id="titre"
         placeholder="Titre de l'article"
         name="titre"
-        [(ngModel)]="article.titre"
+        formControlName="titre"
         required
       />
     </div>
 
+    <!-- Contenu / Description du nouvelle article -->
     <div class="form-group">
       <textarea
         id="contenu"
         placeholder="Contenu de l'article"
         name="contenu"
-        [(ngModel)]="article.contenu"
-        rows="5"
+        rows="4"
+        formControlName="contenu"
+        maxlength="60"
         required
       >
       </textarea>
