@@ -32,7 +32,7 @@ public class Article {
     private String titre;
 
     @NotNull(message = "Le contenu de l'article ne peut pas être vide")
-    @Size(max = 100, message = "Le contenu de l'article ne peut pas dépasser {max} caractères")
+    @Size(max = 500, message = "Le contenu de l'article ne peut pas dépasser {max} caractères")
     private String contenu;
 
     @ManyToOne

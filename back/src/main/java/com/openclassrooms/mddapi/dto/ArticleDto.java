@@ -22,7 +22,7 @@ public class ArticleDto {
     private String titre;
 
     @NotNull
-    @Size(max = 100)
+    @Size(max = 500)
     private String contenu;
 
     private Long auteurId;
