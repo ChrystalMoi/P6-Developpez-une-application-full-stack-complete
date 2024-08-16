@@ -1,1 +1,64 @@
-<p>detail-articles works!</p>
+<app-menu />
+
+<div>
+  <a [routerLink]="['/articles']">
+    <img
+      src="/assets/fleche-gauche.png"
+      alt="Flèche Retour"
+      id="fleche-retour"
+    />
+  </a>
+  @if (detailArticle) {
+  <h2 class="titre-article">{{ detailArticle.titre }}</h2>
+  } @else {Titre}
+</div>
+
+<div class="container">
+  <div class="detail-article">
+    @if (detailArticle) {
+    <div class="meta">
+      <span>{{ detailArticle.dateCreation | date : "EEEE dd MMMM yyyy" }}</span>
+      <span>{{ detailArticle.auteurNom }}</span>
+      <span>{{ detailArticle.themeNom }}</span>
+    </div>
+    <p>Contenu : {{ detailArticle.contenu }}</p>
+    } @else {Detail Article}
+  </div>
+</div>
+
+<hr />
+
+<h2 id="titre-commentaire">Commentaire</h2>
+
+<app-commentaire-article></app-commentaire-article>
+
+<div class="bandeau-envoi-commentaire">
+  <div id="text-area-commentaire">
+    <textarea
+      id="commentaire"
+      name="commentaire"
+      rows="4"
+      formControlName="commentaire"
+      placeholder="Écrivez ici votre commentaire"
+      maxlength="500"
+      required
+    ></textarea>
+    <p id="verifTailleContenu">
+      <!--{{ articleForm.get("commentaire")?.value.length }}/{{ 500 }}-->
+    </p>
+  </div>
+  <div id="btn-send">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      class="bi bi-send"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"
+      />
+    </svg>
+  </div>
+</div>
