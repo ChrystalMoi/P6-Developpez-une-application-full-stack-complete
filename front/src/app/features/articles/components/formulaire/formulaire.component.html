@@ -41,10 +41,15 @@
         name="contenu"
         rows="4"
         formControlName="contenu"
-        maxlength="60"
+        maxlength="{{ descriptionMaxLength }}"
         required
       >
       </textarea>
+      <p id="verifTailleContenu">
+        {{ articleForm.get("contenu")?.value.length }}/{{
+          descriptionMaxLength
+        }}
+      </p>
     </div>
 
     <button type="submit" class="btn-creation">Créer</button>

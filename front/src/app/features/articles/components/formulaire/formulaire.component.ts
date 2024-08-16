@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArticleCreateRequest } from '../../interfaces/articleCreateRequest.interface';
+import { TestBed } from '@angular/core/testing';
 
 @Component({
   selector: 'app-formulaire',
@@ -34,6 +35,7 @@ import { ArticleCreateRequest } from '../../interfaces/articleCreateRequest.inte
 })
 export class FormulaireComponent {
   public articleForm: FormGroup;
+  readonly descriptionMaxLength = 500;
 
   themes$ = inject(ThemeService).tousLesThemes();
 
@@ -59,13 +61,15 @@ export class FormulaireComponent {
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(100),
+          Validators.maxLength(this.descriptionMaxLength),
         ],
       ],
     });
   }
 
   public onSubmit(): void {
+    console.log('formulaire : ', this.articleForm.value);
+
     if (this.articleForm.invalid) {
       console.error('Erreur - Formulaire invalide');
       return; // Arrête l'exécution si le formulaire = invalide
