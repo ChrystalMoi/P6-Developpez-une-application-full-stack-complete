@@ -77,12 +77,7 @@ export class InscriptionComponent {
       // Est exécuté lorsque l'inscription ok
       next: (response: AuthSuccess) => {
         // Stocke le token d'auth renvoyer par le serveur dans le localStorage
-        console.log('AuthSuccess response :', response);
         localStorage.setItem('token', response.token);
-        console.log(
-          'Token stored in localStorage:',
-          localStorage.getItem('token')
-        );
 
         // Récupération donnée user de /me
         this.authService.me().subscribe({
