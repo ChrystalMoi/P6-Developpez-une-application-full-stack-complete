@@ -5,6 +5,6 @@
     <span>{{ article.dateCreation | date : "EEEE dd MMMM yyyy" }}</span>
     <span>{{ article.auteurNom }}</span>
   </div>
-  <p>Contenu : {{ article.contenu }}</p>
+  <p class="truncated-text">Contenu : {{ article.contenu }}</p>
   } @else {Titre}
 </div>

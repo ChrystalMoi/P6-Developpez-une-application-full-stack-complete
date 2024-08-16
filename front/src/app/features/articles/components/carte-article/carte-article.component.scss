@@ -26,4 +26,11 @@
     line-height: 1.6;
     flex-grow: 1;
   }
+
+  .truncated-text {
+    width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
