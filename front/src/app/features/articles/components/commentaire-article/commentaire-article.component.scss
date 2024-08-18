@@ -1,29 +1,47 @@
+$font-color-add-commentaire: #888888;
+$bg-color-commentaire: #f2f2f2;
+$font-size-date-comm: 75%;
+
 .commentaire-container {
   display: flex;
-  margin: 20px 65px;
-}
-
-.colonne-gauche {
-  margin-right: 25px;
-  padding-right: 15px;
-  display: flex;
+  margin: 0 65px;
   align-items: center;
-}
 
-.username {
-  font-weight: bold;
-}
+  .colonne-gauche {
+    margin-right: 25px;
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100px;
 
-.colonne-droite {
-  flex: 3;
-  margin-right: 65px;
-}
+    .username {
+      font-weight: bold;
+      margin-bottom: 3px;
+      white-space: nowrap;
+    }
 
-.commentaire {
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 15px;
-  box-sizing: border-box;
-  font-size: 16px;
-  line-height: 1.6;
+    .date {
+      color: $font-color-add-commentaire;
+      font-size: $font-size-date-comm;
+      margin: 0;
+    }
+  }
+
+  .colonne-droite {
+    flex: 3;
+    margin-right: 65px;
+    flex-grow: 1;
+
+    .commentaire {
+      padding: 15px 0 15px 10px;
+      background-color: $bg-color-commentaire;
+      border-radius: 15px;
+      box-sizing: border-box;
+      font-size: 16px;
+      line-height: 1.6;
+      width: 100%;
+    }
+  }
 }

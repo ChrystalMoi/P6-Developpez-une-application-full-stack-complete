@@ -2,9 +2,12 @@
   @if (commentaire) {
   <div class="colonne-gauche">
     <p class="username">{{ commentaire.auteurNom }}</p>
+    <p class="date">
+      {{ commentaire.dateCreation | date : "dd/MM/yy" }}
+    </p>
   </div>
   <div class="colonne-droite">
-    <p class="commentaire">Commentaire de l'utilisateur.</p>
+    <p class="commentaire">{{ commentaire.contenu }}</p>
   </div>
   } @else {Pas de commentaire pour le moment}
 </div>
