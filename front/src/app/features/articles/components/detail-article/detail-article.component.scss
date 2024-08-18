@@ -64,6 +64,7 @@ body {
   margin-left: 65px;
   align-items: center;
   margin-right: 65px;
+  margin-top: 25px;
 
   textarea {
     flex: 1;
@@ -101,6 +102,9 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
 
     svg {
       width: 35px;
