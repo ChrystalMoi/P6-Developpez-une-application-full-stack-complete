@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArticleCreateRequest } from '../../interfaces/articleCreateRequest.interface';
-import { TestBed } from '@angular/core/testing';
 
 @Component({
   selector: 'app-formulaire',
