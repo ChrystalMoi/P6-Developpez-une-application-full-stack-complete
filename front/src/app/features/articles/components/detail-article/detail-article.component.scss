@@ -119,6 +119,15 @@ body {
   }
 }
 
+#chargement {
+  margin-top: 55px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+}
+
 @media (max-width: 768px) {
   .detail-article {
     .meta {
