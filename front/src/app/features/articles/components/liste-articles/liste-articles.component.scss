@@ -72,14 +72,14 @@
 
   .articles-container {
     display: flex;
-    flex-direction: column; // Aligne les cartes en colonne
-    align-items: center; // Centre les cartes horizontalement
-    padding: 0; // Réduit le padding si nécessaire
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
     gap: 10px;
 
     app-carte-article {
       width: 90%;
-      max-width: 90%; // Permet aux cartes de s'étendre sur toute la largeur disponible
+      max-width: 90%;
       box-sizing: border-box;
     }
   }
