@@ -118,3 +118,18 @@ body {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .detail-article {
+    .meta {
+      flex-direction: column;
+      span {
+        margin-right: 0;
+        margin-bottom: 8px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
