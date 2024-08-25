@@ -28,7 +28,7 @@
   }
 
   @media (max-width: 768px) {
-    .navbar-links {
+    mat-toolbar .navbar-links {
       display: none;
     }
   }
