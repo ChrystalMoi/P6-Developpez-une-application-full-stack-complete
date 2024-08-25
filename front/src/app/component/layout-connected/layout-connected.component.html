@@ -1,0 +1,71 @@
+<div class="app">
+  <mat-toolbar>
+    <span><img src="assets/logo_p6.png" alt="Logo-MDD" class="logo" /></span>
+
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+      (click)="drawer.toggle()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="navbar-links">
+      <a
+        mat-button
+        routerLinkActive="active"
+        routerLink="/articles"
+        class="lien"
+        >Articles</a
+      >
+      <a mat-button routerLinkActive="active" routerLink="/themes" class="lien"
+        >Thèmes</a
+      >
+      <a
+        mat-icon-button
+        routerLink="/me"
+        routerLinkActive="active"
+        class="lien icone-me"
+      >
+        <mat-icon>account_circle</mat-icon></a
+      >
+    </div>
+  </mat-toolbar>
+
+  <mat-drawer-container
+    class="example-sidenav-container"
+    autosize
+    hasBackdrop="true"
+  >
+    <mat-drawer #drawer class="example-sidenav" mode="over">
+      <mat-nav-list>
+        <a
+          mat-list-item
+          routerLink="/articles"
+          routerLinkActive="active"
+          class="lien"
+          >Articles</a
+        >
+        <a
+          mat-list-item
+          routerLink="/themes"
+          routerLinkActive="active"
+          class="lien"
+          >Thèmes</a
+        >
+        <a
+          mat-list-item
+          routerLink="/me"
+          routerLinkActive="active"
+          class="lien icone-me"
+        >
+          <mat-icon>account_circle</mat-icon></a
+        >
+      </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

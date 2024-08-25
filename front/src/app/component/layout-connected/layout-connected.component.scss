@@ -1,0 +1,59 @@
+.app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    height: 80px;
+    margin: 20px 5px 5px;
+  }
+
+  mat-toolbar {
+    background-color: #fff;
+    border-bottom: 0.5px solid #000;
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      .lien {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .icone-me {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .example-icon {
+      display: none;
+    }
+  }
+
+  .active {
+    color: #7550ec !important;
+  }
+}
+
+.example-sidenav-container {
+  flex: 1;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
