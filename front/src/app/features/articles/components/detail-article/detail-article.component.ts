@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { Article } from '../../interfaces/article.interface';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -22,7 +21,6 @@ import { CommentaireCreateRequest } from '../../interfaces/commentaireCreateRequ
   selector: 'app-detail-article',
   standalone: true,
   imports: [
-    MenuComponent,
     DatePipe,
     JsonPipe,
     CommentaireArticleComponent,

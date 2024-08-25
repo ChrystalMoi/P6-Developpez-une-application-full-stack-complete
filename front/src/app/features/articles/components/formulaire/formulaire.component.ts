@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import {
   FormBuilder,
   FormGroup,
@@ -20,7 +19,6 @@ import { ArticleCreateRequest } from '../../interfaces/articleCreateRequest.inte
   selector: 'app-formulaire',
   standalone: true,
   imports: [
-    MenuComponent,
     FormsModule,
     AsyncPipe,
     MatFormFieldModule,

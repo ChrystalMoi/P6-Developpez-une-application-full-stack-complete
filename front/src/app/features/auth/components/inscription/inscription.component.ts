@@ -1,5 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { AuthService } from '../../services/auth.service';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
@@ -20,7 +19,7 @@ import { SessionService } from '../../../../services/session.service';
   templateUrl: './inscription.component.html',
   styleUrls: ['./inscription.component.scss'],
   standalone: true,
-  imports: [MenuComponent, RouterLink, NgIf, ReactiveFormsModule],
+  imports: [RouterLink, NgIf, ReactiveFormsModule],
 })
 export class InscriptionComponent {
   public hide = true;

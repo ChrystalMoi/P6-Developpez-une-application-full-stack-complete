@@ -1,5 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormBuilder,
@@ -19,7 +18,7 @@ import { User } from '../../../../interfaces/user.interface';
   templateUrl: './connexion.component.html',
   styleUrls: ['./connexion.component.scss'],
   standalone: true,
-  imports: [MenuComponent, RouterLink, NgIf, ReactiveFormsModule],
+  imports: [RouterLink, NgIf, ReactiveFormsModule],
 })
 export class ConnexionComponent {
   public hide = true;

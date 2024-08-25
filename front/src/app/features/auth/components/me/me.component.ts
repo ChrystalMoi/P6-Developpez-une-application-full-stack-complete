@@ -1,6 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { SessionService } from '../../../../services/session.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './me.component.html',
   styleUrls: ['./me.component.scss'],
   standalone: true,
-  imports: [CommonModule, MenuComponent],
+  imports: [CommonModule],
 })
 export class MeComponent implements OnInit {
   moreInfoVisible: boolean = false;

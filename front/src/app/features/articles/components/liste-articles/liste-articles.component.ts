@@ -1,6 +1,5 @@
 import { Component, inject, NgZone, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { CarteArticleComponent } from '../carte-article/carte-article.component';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { ArticlesService } from '../../services/articles.service';
@@ -9,7 +8,7 @@ import { Article } from '../../interfaces/article.interface';
 @Component({
   selector: 'app-liste-articles',
   standalone: true,
-  imports: [MenuComponent, CarteArticleComponent, AsyncPipe, JsonPipe],
+  imports: [CarteArticleComponent, AsyncPipe, JsonPipe],
   templateUrl: './liste-articles.component.html',
   styleUrl: './liste-articles.component.scss',
 })

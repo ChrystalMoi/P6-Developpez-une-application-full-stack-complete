@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuComponent } from '../../../../component/menu/menu.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -7,7 +6,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [MenuComponent, RouterLink],
+  imports: [RouterLink],
 })
 export class HomeComponent implements OnInit {
   constructor() {}
