@@ -1,14 +1,14 @@
 <div id="me-container">
   <h1>Profil utilisateur</h1>
 
-  <form>
+  <form [formGroup]="meForm">
     <div class="form-group">
       <input
         matInput
         type="text"
         id="nom"
         formControlName="nom"
-        placeholder="Entrez votre nouveau nom utilisateur"
+        placeholder="Entrez votre nouveau nom"
         required
       />
     </div>
@@ -24,7 +24,9 @@
       />
     </div>
 
-    <button type="submit" class="btn-sauvegarder">Sauvegarder</button>
+    <button type="submit" class="btn-sauvegarder" (click)="submit()">
+      Sauvegarder
+    </button>
   </form>
   <br />
   <button class="btn-desinscrire" (click)="deconnexion()">
