@@ -33,4 +33,12 @@ export class AuthService {
   public me(): Observable<User> {
     return this.httpClient.get<User>(`${this.pathService}/me`);
   }
+
+  public update(registerRequest: RegisterRequest): Observable<AuthSuccess> {
+    console.log(registerRequest);
+    return this.httpClient.put<AuthSuccess>(
+      `${this.pathService}/me`,
+      registerRequest
+    );
+  }
 }
