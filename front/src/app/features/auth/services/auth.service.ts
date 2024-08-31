@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
   public register(registerRequest: RegisterRequest): Observable<AuthSuccess> {
-    console.log(registerRequest);
+    //console.log(registerRequest);
 
     return this.httpClient.post<AuthSuccess>(
       `${this.pathService}/register`,
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   public update(registerRequest: RegisterRequest): Observable<AuthSuccess> {
-    console.log(registerRequest);
+    //console.log(registerRequest);
     return this.httpClient.put<AuthSuccess>(
       `${this.pathService}/me`,
       registerRequest
