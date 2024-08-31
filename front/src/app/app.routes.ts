@@ -11,6 +11,7 @@ import { ListeArticlesComponent } from './features/articles/components/liste-art
 import { DetailArticleComponent } from './features/articles/components/detail-article/detail-article.component';
 import { LayoutAuthComponent } from './component/layout-auth/layout-auth.component';
 import { LayoutConnectedComponent } from './component/layout-connected/layout-connected.component';
+import { ListeThemesComponent } from './features/themes/components/liste-themes/liste-themes.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Route pour la page d'accueil - Home
@@ -39,6 +40,11 @@ export const routes: Routes = [
         component: ListeArticlesComponent,
         pathMatch: 'full',
       }, // Routes pour afficher tous les articles
+      {
+        path: 'themes',
+        component: ListeThemesComponent,
+        pathMatch: 'full',
+      }, // Routes pour afficher tous les themes
       {
         path: 'creation-article',
         component: FormulaireComponent,
