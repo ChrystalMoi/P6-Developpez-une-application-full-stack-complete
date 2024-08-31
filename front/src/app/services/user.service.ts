@@ -16,7 +16,7 @@ export class UserService {
     return this.httpClient.get<User>(`${this.pathService}/${id}`);
   }
 
-  public sauvegardeModifUser(user: User) {
+  public sauvegardeModifUser(user: User): Observable<ArticleResponse> {
     return this.httpClient.post<ArticleResponse>(
       `${this.pathService}/me`,
       user
