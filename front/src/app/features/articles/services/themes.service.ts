@@ -15,21 +15,19 @@ export class ThemeService {
     return this.httpClient.get<Theme[]>(this.pathService);
   }
 
-  public inscriptionTheme(id: number): void {
-    this.httpClient
+  public inscriptionTheme(id: number): Observable<string> {
+    return this.httpClient
       .post(`${this.pathService}/${id}/subscription`, '', {
         responseType: 'text',
       })
-      .pipe(take(1))
-      .subscribe();
+      .pipe(take(1));
   }
 
-  public desabonnementTheme(id: number): void {
-    this.httpClient
+  public desabonnementTheme(id: number): Observable<string> {
+    return this.httpClient
       .delete(`${this.pathService}/${id}/subscription`, {
         responseType: 'text',
       })
-      .pipe(take(1))
-      .subscribe();
+      .pipe(take(1));
   }
 }

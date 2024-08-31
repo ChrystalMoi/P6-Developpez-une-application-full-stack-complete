@@ -1,0 +1,9 @@
+<div class="theme-container">
+  @for (theme of themes(); track theme.id) {
+  <!--{{ theme | json }}-->
+  <app-carte-theme [theme]="theme" />
+  <br />
+  } @empty {
+  <p>Pas de theme</p>
+  }
+</div>

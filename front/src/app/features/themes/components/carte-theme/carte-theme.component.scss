@@ -1,0 +1,48 @@
+.carte-theme {
+  background-color: #e1e1e1e1;
+  border-radius: 8px;
+  height: 100%;
+  margin-bottom: 0;
+  padding: 16px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+
+  h2 {
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  p {
+    text-align: left;
+    font-size: 1em;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .truncated-text {
+    width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  button {
+    background-color: #7550ec;
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    font-size: 16px;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    text-align: center;
+
+    &:hover {
+      background-color: #5e3aba;
+    }
+  }
+}

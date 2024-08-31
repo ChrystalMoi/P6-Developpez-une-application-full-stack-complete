@@ -1,0 +1,9 @@
+@if (theme) {
+<div class="carte-theme">
+  <h2>{{ theme.nom }}</h2>
+  <p class="truncated-text">Contenu : {{ theme.description }}</p>
+  <button (click)="inscriptionTheme()">
+    {{ estAbonne ? "Abonné" : "S'abonner" }}
+  </button>
+</div>
+} @else {Titre}
