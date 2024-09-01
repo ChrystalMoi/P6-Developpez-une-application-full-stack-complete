@@ -37,6 +37,13 @@
 
   <h2>Abonnements</h2>
 
+  @for (theme of user?.subscriptions; track theme.id) {
+  <app-carte-theme [theme]="theme" />
+  <br />
+  } @empty {
+  <p>Pas de theme</p>
+  }
+
   <div *ngIf="onError" class="error-message">
     Une erreur est survenue lors de l'inscription.
   </div>

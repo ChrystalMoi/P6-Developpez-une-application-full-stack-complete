@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../../../services/session.service';
 import { Router } from '@angular/router';
@@ -13,19 +13,27 @@ import {
 import { RegisterRequest } from '../../interfaces/registerRequest.interface';
 import { AuthService } from '../../services/auth.service';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
+import { Theme } from '../../../articles/interfaces/theme.interface';
+import { CarteThemeComponent } from '../../../themes/components/carte-theme/carte-theme.component';
 
 @Component({
   selector: 'app-me',
   templateUrl: './me.component.html',
   styleUrls: ['./me.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    CarteThemeComponent,
+  ],
 })
 export class MeComponent implements OnInit {
   moreInfoVisible: boolean = false;
   public onError = false;
   public user: User | undefined;
   public meForm: FormGroup;
+  private _themes = signal<Theme[]>([]);
 
   constructor(
     private sessionService: SessionService,
@@ -40,18 +48,33 @@ export class MeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.user = this.sessionService.user;
-
-    const recuperationControleNom = this.meForm.get('nom');
-    recuperationControleNom?.setValue(this.user?.nom);
-
-    const recuperationControleEmail = this.meForm.get('email');
-    recuperationControleEmail?.setValue(this.user?.email);
+  get themes() {
+    return this._themes;
   }
 
-  showMore() {
-    this.moreInfoVisible = !this.moreInfoVisible;
+  ngOnInit(): void {
+    // Actualise les données utilisateur
+    this.authService.me().subscribe({
+      next: (responseUser: User) => {
+        // Actualiser le user (responseUser) dans sessionService
+        this.sessionService.user = responseUser;
+
+        // Actualise le user dans la component
+        this.user = this.sessionService.user;
+
+        // MAJ Form avec les données de l'utilisateur
+        const recuperationControleNom = this.meForm.get('nom');
+        recuperationControleNom?.setValue(this.user?.nom);
+
+        const recuperationControleEmail = this.meForm.get('email');
+        recuperationControleEmail?.setValue(this.user?.email);
+
+        //
+      },
+      error(err) {
+        console.error('Une erreur est survenue : ', err);
+      },
+    });
   }
 
   public submit(): void {
