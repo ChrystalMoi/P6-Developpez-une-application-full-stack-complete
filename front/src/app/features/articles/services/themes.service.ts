@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { Theme } from '../interfaces/theme.interface';
+import { Abonnement } from '../../themes/interfaces/abonnement.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +30,11 @@ export class ThemeService {
         responseType: 'text',
       })
       .pipe(take(1));
+  }
+
+  public verificationAbonnement(id: number): Observable<Abonnement> {
+    return this.httpClient.get<Abonnement>(
+      `${this.pathService}/verification/${id}`
+    );
   }
 }
