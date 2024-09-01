@@ -312,4 +312,36 @@ public class ThemeController {
         }
     }
 
+    @GetMapping(value = "/verification/{id}", produces = "application/json")
+    @Secured("ROLE_USER")
+    public String verificationInscriptionTheme(
+            @Parameter(description = "L'identifiant du thème", required = true)
+            @PathVariable("id") final long id,
+
+            @Parameter(description = "Token JWT pour l'authentification", required = true)
+            @RequestHeader(value="Authorization", required=false) String jwt) throws EntiteNonTrouveeException
+    {
+        // Extraction du nom d'utilisateur du token JWT
+        String nomUtilisateur = jwtService.extractNomUtilisateur(jwt.substring(7));
+
+        // Récupération de l'utilisateur à partir du service
+        InfoUtilisateur utilisateur = infoUtilisateurService.getUtilisateurParNomUtilisateur(nomUtilisateur);
+
+        // Récupération des abonnements actuel de l'utilisateur
+        Set<Theme> userSubscriptions = utilisateur.getSubscriptions();
+
+        // Un autre truc relou à faire : récupérer le theme en paramètre
+        Theme theme = themeService.getThemeParId(id);
+
+        // Si le theme en paramètre est dans les abonnements de l'user
+        if (userSubscriptions.contains(theme)) {
+            // Retourner un objet json
+            String estInscrit = "{\"inscrit\": true}";
+            return estInscrit;
+        } else {
+            String estPasInscrit = "{\"inscrit\": false}";
+            return estPasInscrit;
+        }
+    }
+
 }
