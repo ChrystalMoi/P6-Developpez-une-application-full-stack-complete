@@ -24,6 +24,7 @@ export class ListeThemesComponent implements OnInit {
   get themes() {
     return this._themes;
   }
+
   ngOnInit(): void {
     this.themeService.tousLesThemes().subscribe({
       next: (theme) => {
