@@ -2,7 +2,7 @@
 
 #me-container {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  max-width: 400px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   border-radius: 5px;
@@ -18,7 +18,12 @@
     margin-bottom: 20px;
   }
 
-  form {
+  #formulaire {
+    max-width: 400px;
+    margin: 0 auto;
+
+    box-sizing: border-box;
+
     .form-group {
       margin-bottom: 15px;
 
@@ -78,5 +83,36 @@
     &:hover {
       background-color: #e7e5e5;
     }
+  }
+
+  .theme-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+
+    app-carte-theme {
+      max-width: calc(50% - 32px);
+      flex: 1 1 calc(50% - 32px);
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+
+      app-carte-theme {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+    }
+  }
+
+  #no-theme {
+    font-style: italic;
+    color: #888;
   }
 }
