@@ -10,7 +10,9 @@
 
   mat-toolbar {
     background-color: #fff;
-    border-bottom: 0.5px solid #000;
+    //border-bottom: 0.5px solid #5c5c5caf;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.548);
+    z-index: 3;
 
     .navbar-links {
       display: flex;
@@ -24,6 +26,39 @@
 
     .example-icon {
       margin-left: auto;
+    }
+  }
+
+  .example-sidenav {
+    width: 40%;
+    background-color: #fff;
+
+    .active {
+      color: #7550ec !important;
+      font-weight: bold;
+    }
+
+    mat-nav-list {
+      display: flex;
+      flex-direction: column;
+
+      .icone-me {
+        color: #000;
+        margin: 0;
+      }
+
+      .lien-mobile {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        margin: 5px 0;
+
+        &:hover {
+          background-color: rgba(191, 191, 191, 0.308);
+          border-radius: 12px;
+          margin: 8px;
+        }
+      }
     }
   }
 
