@@ -11,6 +11,10 @@
   h1 {
     font-size: 24px;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+      margin-top: 25px;
+    }
   }
 
   form {
@@ -70,9 +74,13 @@
   cursor: pointer;
   transition: box-shadow 0.2s ease;
   z-index: 1000;
-  margin-top: 55px;
+  margin-top: 15px;
 
   &:hover {
     filter: drop-shadow(0 0 10px rgba(117, 80, 236, 0.8));
+  }
+
+  @media (max-width: 768px) {
+    margin-top: -10px;
   }
 }
