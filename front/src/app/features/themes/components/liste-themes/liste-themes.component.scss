@@ -14,3 +14,15 @@
     box-sizing: border-box;
   }
 }
+
+@media (max-width: 768px) {
+  // Ajuste cette largeur selon ton besoin
+  .theme-container {
+    flex-direction: column; // S'assure que les cartes s'affichent en colonne
+
+    app-carte-theme {
+      max-width: 100%;
+      flex: 1 1 100%; // Une carte prend toute la largeur en format mobile
+    }
+  }
+}
