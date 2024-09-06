@@ -15,16 +15,25 @@ body {
   cursor: pointer;
   transition: box-shadow 0.2s ease;
   z-index: 1000;
-  margin-top: 55px;
+  margin-top: 15px;
 
   &:hover {
     filter: drop-shadow(0 0 10px rgba(117, 80, 236, 0.8));
   }
+
+  @media (max-width: 768px) {
+    margin-top: -10px;
+  }
 }
 
 .titre-article {
-  margin-top: 14px;
-  margin-left: 65px;
+  margin-top: 35px;
+  margin-left: 64px;
+
+  @media (max-width: 768px) {
+    margin-top: 45px;
+    margin-left: 55px;
+  }
 }
 
 .detail-article {
@@ -35,9 +44,10 @@ body {
   width: calc(100% - 130px);
 
   .meta {
+    font-style: italic;
     display: flex;
-    margin-bottom: 16px;
-    font-size: 0.9em;
+    margin-bottom: 15px;
+    font-size: 0.8em;
     span {
       margin-right: 50px;
 
@@ -56,7 +66,19 @@ body {
 
 #titre-commentaire {
   margin-top: 14px;
-  margin-left: 65px;
+  margin-left: 60px;
+
+  @media (max-width: 768px) {
+    margin-left: 55px;
+  }
+}
+
+#no-commentaire {
+  margin-left: 60px;
+
+  @media (max-width: 768px) {
+    margin-left: 55px;
+  }
 }
 
 .bandeau-envoi-commentaire {
@@ -130,11 +152,15 @@ body {
 
 @media (max-width: 768px) {
   .detail-article {
+    margin-left: 55px;
+    max-width: calc(100% - 100px);
+    width: calc(100% - 100px);
+
     .meta {
       flex-direction: column;
       span {
         margin-right: 0;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         &:last-child {
           margin-bottom: 0;
         }
