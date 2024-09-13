@@ -92,7 +92,7 @@ public class UtilisateurController {
     public List<ArticleDto> getArticlesForUserById(@PathVariable("id") final long id) throws EntiteNonTrouveeException {
         List<Long> ids = infoUtilisateurService.getUtilisateurParId(id).getSubscriptions().stream()
                 .map(Theme::getId)
-                .collect(Collectors.toList());
+                .toList();
         return articleMapper.mapToDto(articleService.getTousLesArticlesDansLesThemeIds(ids));
     }
 
