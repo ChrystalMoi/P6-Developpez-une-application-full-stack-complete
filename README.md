@@ -1,5 +1,9 @@
 # P6-Developpez-une-application-full-stack-complete
 
+Ce projet est une application full-stack utilisant Angular pour le front-end et Java pour le back-end.
+
+Le but est de créer le prochain réseau social dédié aux développeurs : MDD (Monde de Dév). Le projet de réseau social MDD est d’aider les développeurs qui cherchent un travail, grâce à la mise en relation, en encourageant les liens et la collaboration entre pairs qui ont des intérêts communs.
+
 ## Sommaire
 
 - [P6 - Développez une application full stack complète](#p6---développez-une-application-full-stack-complète)
